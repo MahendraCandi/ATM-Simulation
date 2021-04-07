@@ -25,7 +25,6 @@ public class App
         boolean exit = false;
         while (!exit) {
             welcomeScreen();
-            System.out.println("\n");
         }
     }
 
@@ -53,7 +52,7 @@ public class App
         System.out.println("1. Withdraw");
         System.out.println("2. Fund Transfer");
         System.out.println("3. Exit");
-        System.out.println("Please choose option[3]: ");
+        System.out.print("Please choose option[3]: ");
         String option = scanner.nextLine();
         if (option.isEmpty()) option = "3";
         switch (option) {
@@ -132,7 +131,6 @@ public class App
         System.out.println("Date : " + date.format(dtf));
         System.out.println("Withdraw : $" + amount);
         System.out.println("Balance : $" + customer.getBalance());
-        System.out.println();
         System.out.println("1. Transaction");
         System.out.println("2. Exit");
         System.out.print("Choose option[2]: ");
@@ -197,7 +195,7 @@ public class App
     private static String fundTransferScreen3() {
         int referenceNumber = getReferenceNumber();
         System.out.println("Reference Number [" + referenceNumber + "]: ");
-        System.out.println("Press enter to continued");
+        System.out.print("Press enter to continued ");
         String inputReference = scanner.nextLine();
         inputReference = inputReference.isEmpty() ? String.valueOf(referenceNumber) : inputReference;
         if (!inputReference.isEmpty() && isOnlyNumbers(inputReference)) {
@@ -214,7 +212,6 @@ public class App
         System.out.println("Destination account: " + destinationAccount);
         System.out.println("Transfer amount: $" + amount);
         System.out.println("Reference number: " + inputReference);
-        System.out.println();
         System.out.println("1. Confirm Trx");
         System.out.println("2. Cancel Trx");
         System.out.print("Choose Option[2]: ");
@@ -238,7 +235,6 @@ public class App
         System.out.println("Transfer amount: $" + amount);
         System.out.println("Reference number: " + referenceNumber);
         System.out.println("Balance: $" + customer.getBalance().intValue());
-        System.out.println();
         System.out.println("1. Transaction");
         System.out.println("2. Exit");
         System.out.print("Choose Option[2]: ");
