@@ -1,2 +1,3 @@
 # ATM-Simulation
-Java console application
+build mvn clean package
+run java -jar [app_name].jar
