@@ -1,13 +1,19 @@
 package com.mahendracandi.mitrais_atm_simulation;
 
+import com.mahendracandi.mitrais_atm_simulation.model.Customer;
+import com.mahendracandi.mitrais_atm_simulation.service.CustomerService;
+import com.mahendracandi.mitrais_atm_simulation.service.CustomerServiceImpl;
+import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -16,6 +22,8 @@ import java.util.Scanner;
 public class AppTest 
     extends TestCase
 {
+    private static final CustomerService customerService = new CustomerServiceImpl();
+
     /**
      * Create the test case
      *
@@ -24,7 +32,6 @@ public class AppTest
     public AppTest( String testName )
     {
         super( testName );
-        System.out.println("1");
     }
 
     /**
@@ -32,8 +39,6 @@ public class AppTest
      */
     public static Test suite()
     {
-
-        System.out.println("2");
         return new TestSuite( AppTest.class );
     }
 
@@ -42,16 +47,27 @@ public class AppTest
      */
     public void testApp()
     {
-
-        System.out.println("3");
         assertTrue( true );
     }
 
-    public void testDefaultOption () {
-        LocalDateTime date = LocalDateTime.now();
-        System.out.println(date);
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a");
-        System.out.println("Date : " + date.format(dtf).toString());
+    public void testGetAllCustomers() {
+        List<Customer> customerList = customerService.getCustomers();
+        Assert.assertTrue(customerList.size() > 0);
+    }
 
+    public void testGetCustomerByAccountNumber() {
+        Customer customer = customerService.getCustomerByAccountNumber("112233");
+        Assert.assertEquals("John Doe", customer.getName());
+    }
+
+    public void testUpdateCustomer() {
+        Customer customer = customerService.getCustomerByAccountNumber("112244");
+        customer.setName("Tamara");
+        customerService.updateCustomer(customer);
+
+        Assert.assertEquals("Tamara", customerService.getCustomers()
+                .stream()
+                .filter(p -> p.getAccountNumber().equals("112244"))
+                .findFirst().get().getName());
     }
 }
