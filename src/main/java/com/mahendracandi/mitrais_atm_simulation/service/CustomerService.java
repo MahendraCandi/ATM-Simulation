@@ -9,5 +9,7 @@ public interface CustomerService {
 
     Customer getCustomerByAccountNumber(String accountNumber);
 
+    Customer getCustomerByAccountAndPinNumber(String accountNumber, String pinNumber);
+
     Customer updateCustomer(Customer customer);
 }

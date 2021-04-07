@@ -21,7 +21,14 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public Customer getCustomerByAccountNumber(String accountNumber) {
         return customers.stream()
-                .filter(p -> p.getAccountNumber().equalsIgnoreCase(accountNumber))
+                .filter(p -> p.getAccountNumber().equals(accountNumber))
+                .findFirst().orElse(null);
+    }
+
+    @Override
+    public Customer getCustomerByAccountAndPinNumber(String accountNumber, String pinNumber) {
+        return customers.stream()
+                .filter(p -> p.getAccountNumber().equals(accountNumber) && p.getPin().equals(pinNumber))
                 .findFirst().orElse(null);
     }
 
