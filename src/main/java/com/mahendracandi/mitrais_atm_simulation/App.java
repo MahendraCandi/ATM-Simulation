@@ -1,341 +1,242 @@
 package com.mahendracandi.mitrais_atm_simulation;
 
+import com.mahendracandi.mitrais_atm_simulation.appEnum.TransactionType;
 import com.mahendracandi.mitrais_atm_simulation.model.Customer;
+import com.mahendracandi.mitrais_atm_simulation.model.FundTransfer;
+import com.mahendracandi.mitrais_atm_simulation.model.Transaction;
+import com.mahendracandi.mitrais_atm_simulation.screen.impl.*;
 import com.mahendracandi.mitrais_atm_simulation.service.CustomerService;
 import com.mahendracandi.mitrais_atm_simulation.service.CustomerServiceImpl;
+import com.mahendracandi.mitrais_atm_simulation.service.TransactionService;
+import com.mahendracandi.mitrais_atm_simulation.service.TransactionServiceImpl;
+import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
+import com.mahendracandi.mitrais_atm_simulation.util.ScreenUtil;
+import com.mahendracandi.mitrais_atm_simulation.util.ValidatorUtil;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Scanner;
 
-/**
- * Hello world!
- *
- */
-public class App 
-{
+public class App {
 
-    private static final Scanner scanner = new Scanner(System.in);
     private static final CustomerService customerService = new CustomerServiceImpl();
-    private static Customer customer;
 
-    public static void main( String[] args )
-    {
+    public static void main(String[] args) {
+        App app = new App();
+
         boolean exit = false;
-        while (!exit) {
-            welcomeScreen();
-        }
-    }
+        do {
+            LoginScreen loginScreen = new LoginScreen();
+            loginScreen.showScreen();
+            Customer customer = loginScreen.getCustomer();
 
-    private static void welcomeScreen() {
-        System.out.print("Enter account number: ");
-        String accountNumber = scanner.nextLine();
-        boolean isCredentialValid = false;
-
-        if (isAccountNumberValid(accountNumber)) {
-            System.out.print("Enter PIN: ");
-            String pin = scanner.nextLine();
-            if (isPinValid(pin)) {
-                isCredentialValid = isCredentialValid(accountNumber, pin);
+            if (customer != null) {
+                ScreenUtil<String> screenUtil = app.showTransaction(customer);
+                if (screenUtil.isBackScreen()) exit = true;
             }
-        }
-
-        if (!isCredentialValid) {
-            System.out.println("Invalid Account Number/PIN");
-        } else {
-            transactionScreen();
-        }
+        } while (!exit);
+        MessageUtil.printMessage("Bye");
     }
 
-    private static void transactionScreen () {
-        System.out.println("1. Withdraw");
-        System.out.println("2. Fund Transfer");
-        System.out.println("3. Exit");
-        System.out.print("Please choose option[3]: ");
-        String option = scanner.nextLine();
-        if (option.isEmpty()) option = "3";
-        switch (option) {
+    private ScreenUtil<String> showTransaction(Customer customer) {
+        boolean exit = false;
+        ScreenUtil<String> screenUtil = new ScreenUtil<>();
+        do {
+            TransactionService transactionService = new TransactionServiceImpl();
+            TransactionScreen transactionScreen = new TransactionScreen();
+            transactionScreen.showScreen();
+            String option = transactionScreen.doInput();
+            switch (option) {
+                case "1":
+                    ScreenUtil<BigDecimal> withdrawScreen = readWithdrawScreen(customer);
+                    if (withdrawScreen.isBackScreen()) continue;
+
+                    ScreenUtil<Transaction> withdrawSummaryScreen = readSummaryScreen(
+                            TransactionType.WITHDRAW,
+                            customer,
+                            withdrawScreen.getPayload(),
+                            LocalDateTime.now());
+                    if (withdrawSummaryScreen.isBackScreen()) continue;
+
+                    transactionService.doTransaction(withdrawSummaryScreen.getPayload());
+                    break;
+                case "2":
+                    ScreenUtil<FundTransfer> fundTransferScreenUtil = readFundTransfer();
+                    if (fundTransferScreenUtil.isBackScreen()) continue;
+
+                    FundTransfer fundTransfer = fundTransferScreenUtil.getPayload();
+                    ScreenUtil<FundTransfer> transferConfirmationScreenUtil = readFundTransferConfirmationScreen(fundTransfer, customer);
+                    if (transferConfirmationScreenUtil.isBackScreen()) continue;
+
+                    fundTransfer = transferConfirmationScreenUtil.getPayload();
+                    ScreenUtil<Transaction> fundTransferSummaryScreen = readSummaryScreen(
+                            TransactionType.FUND_TRANSFER,
+                            customer,
+                            new BigDecimal(fundTransfer.getTransferAmount()),
+                            LocalDateTime.now(),
+                            fundTransfer.getDestinationCustomer(),
+                            fundTransfer.getReferenceNumber());
+                    if (fundTransferSummaryScreen.isBackScreen()) continue;
+
+                    transactionService.doTransaction(fundTransferSummaryScreen.getPayload());
+                    break;
+                case "3":
+                    exit = true;
+                    screenUtil.setBackScreen(true);
+            }
+        } while (!exit);
+        return screenUtil;
+    }
+
+    private ScreenUtil<FundTransfer> readFundTransferConfirmationScreen(FundTransfer fundTransfer, Customer customer) {
+        ScreenUtil<FundTransfer> screenUtil;
+        boolean exit = false;
+        do {
+            screenUtil = new ScreenUtil<>();
+            FundTransferConfirmationScreen fundTransferConfirmationScreen = new FundTransferConfirmationScreen(fundTransfer);
+            fundTransferConfirmationScreen.showScreen();
+            String input = fundTransferConfirmationScreen.doInput();
+            switch (input) {
+                case "1":
+                    ScreenUtil<FundTransfer> validateFundTransferScreen = validateFundTransfer(fundTransfer, customer);
+                    if (validateFundTransferScreen.isBackScreen()) screenUtil.setBackScreen(true);
+                    screenUtil.setPayload(validateFundTransferScreen.getPayload());
+                    exit = true;
+                    break;
+                case "2":
+                    screenUtil.setBackScreen(true);
+                    exit = true;
+                    break;
+            }
+        } while (!exit);
+
+        return screenUtil;
+    }
+
+    private ScreenUtil<FundTransfer> validateFundTransfer(FundTransfer fundTransfer, Customer customer) {
+        ScreenUtil<FundTransfer> screenUtil = new ScreenUtil<>();
+        String destinationAccount = fundTransfer.getDestinationAccount();
+
+        boolean isDestinationAccountValid;
+        boolean isTransferAmountValid;
+        boolean isReferenceNumberValid;
+
+        ValidatorUtil validatorUtil = new ValidatorUtil();
+        isDestinationAccountValid = validatorUtil.isDestinationAccountValid(destinationAccount);
+        isTransferAmountValid = validatorUtil.isTransferAmountValid(fundTransfer.getTransferAmount(), customer);
+        isReferenceNumberValid = validatorUtil.isReferenceNumberValid(fundTransfer.getReferenceNumber());
+
+        if (isDestinationAccountValid && isTransferAmountValid && isReferenceNumberValid) {
+            Customer destinationCustomer = customerService.getCustomerByAccountNumber(destinationAccount);
+            fundTransfer.setDestinationCustomer(destinationCustomer);
+            screenUtil.setPayload(fundTransfer);
+            return screenUtil;
+        }
+        screenUtil.setBackScreen(true);
+        return screenUtil;
+    }
+
+    private ScreenUtil<FundTransfer> readFundTransfer() {
+        ScreenUtil<FundTransfer> screenUtil = new ScreenUtil<>();
+        FundTransferScreen fundTransferScreen = new FundTransferScreen();
+        fundTransferScreen.showScreen();
+        FundTransfer fundTransfer = fundTransferScreen.getFundTransfer();
+        if (fundTransfer == null) {
+            screenUtil.setBackScreen(true);
+        } else {
+            screenUtil.setPayload(fundTransfer);
+        }
+
+        return screenUtil;
+    }
+
+    private ScreenUtil<Transaction> readSummaryScreen(
+            TransactionType transactionType,
+            Customer customer,
+            BigDecimal amount,
+            LocalDateTime dateTime,
+            Customer destinationAccount,
+            String referenceNumber) {
+        ScreenUtil<Transaction> screenUtil;
+        Transaction transaction = new Transaction();
+        transaction.setTransactionType(transactionType);
+        transaction.setCustomer(customer);
+        transaction.setAmount(amount);
+        transaction.setDate(dateTime);
+        transaction.setDestinationAccount(destinationAccount);
+        transaction.setReferenceNumber(referenceNumber);
+
+        screenUtil = readSummaryScreen(transactionType, transaction);
+        return screenUtil;
+    }
+
+    private ScreenUtil<Transaction> readSummaryScreen(TransactionType transactionType, Customer customer, BigDecimal amount, LocalDateTime dateTime) {
+        ScreenUtil<Transaction> screenUtil;
+        Transaction transaction = new Transaction();
+        transaction.setTransactionType(transactionType);
+        transaction.setCustomer(customer);
+        transaction.setAmount(amount);
+        transaction.setDate(dateTime);
+
+        screenUtil = readSummaryScreen(transactionType, transaction);
+        return screenUtil;
+    }
+
+    private ScreenUtil<Transaction> readSummaryScreen(TransactionType transactionType, Transaction transaction) {
+        ScreenUtil<Transaction> screenUtil = new ScreenUtil<>();
+        SummaryScreen summaryScreen = new SummaryScreen(transaction, transactionType);
+        summaryScreen.showScreen();
+        String input = summaryScreen.doInput();
+        switch (input) {
             case "1":
-                withdrawScreen();
+                screenUtil.setPayload(transaction);
                 break;
             case "2":
-                fundTransfer();
-                break;
-            case "3":
-                welcomeScreen();
+                screenUtil.setBackScreen(true);
                 break;
             default:
-                transactionScreen();
+                screenUtil = readSummaryScreen(transactionType, transaction);
         }
+
+        return screenUtil;
     }
 
-    private static void withdrawScreen() {
-        System.out.println("1. $10");
-        System.out.println("2. $50");
-        System.out.println("3. $100");
-        System.out.println("4. Other");
-        System.out.println("5. Back");
-        System.out.print("Please choose option[5]: ");
-        String option = scanner.nextLine();
-        if (option.isEmpty()) option = "5";
-        String amount;
-        switch (option) {
+    private ScreenUtil<BigDecimal> readWithdrawScreen(Customer customer) {
+        ScreenUtil<BigDecimal> screenUtil = new ScreenUtil<>();
+        BigDecimal amount = null;
+        WithdrawScreen withdrawScreen = new WithdrawScreen();
+        withdrawScreen.showScreen();
+        String input = withdrawScreen.doInput();
+        switch (input) {
             case "1":
-                amount = "10";
-                if (calculateBalance(amount)) summaryScreen(amount);
-                else withdrawScreen();
+                amount = new BigDecimal("10");
+                screenUtil.setPayload(amount);
                 break;
             case "2":
-                amount = "50";
-                if (calculateBalance(amount)) summaryScreen(amount);
-                else withdrawScreen();
+                amount = new BigDecimal("50");
+                screenUtil.setPayload(amount);
                 break;
             case "3":
-                amount = "100";
-                if (calculateBalance(amount)) summaryScreen(amount);
-                else withdrawScreen();
+                amount = new BigDecimal("100");
+                screenUtil.setPayload(amount);
                 break;
             case "4":
-                System.out.println("Other Withdraw");
-                System.out.print("Enter amount to withdraw: ");
-                amount = scanner.nextLine();
-                if (calculateBalance(amount)) summaryScreen(amount);
-                else withdrawScreen();
+                OtherWithdrawScreen otherWithdrawScreen = new OtherWithdrawScreen();
+                otherWithdrawScreen.showScreen();
+                String otherAmount = otherWithdrawScreen.doInput();
+                ValidatorUtil validatorUtil = new ValidatorUtil();
+                boolean isWithdrawAmountValid = validatorUtil.isWithdrawAmountValid(otherAmount, customer);
+                if (isWithdrawAmountValid) {
+                    amount = new BigDecimal(otherAmount);
+                    screenUtil.setPayload(amount);
+                }
                 break;
             case "5":
-                transactionScreen();
+                screenUtil.setBackScreen(true);
                 break;
             default:
-                withdrawScreen();
+                screenUtil = readWithdrawScreen(customer);
         }
+        return screenUtil;
     }
 
-    private static boolean calculateBalance(String amount) {
-        if (checkAmountValidation(amount)) {
-            // deduct balance by amount
-            int deductedBalance = customer.getBalance().intValue() - Integer.parseInt(amount);
-            customer.setBalance(new BigDecimal(deductedBalance));
-
-            // save customer
-            customer = customerService.updateCustomer(customer);
-            return true;
-        }
-        return false;
-    }
-
-    private static void summaryScreen(String amount) {
-        System.out.println("Summary");
-        LocalDateTime date = LocalDateTime.now();
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a");
-        System.out.println("Date : " + date.format(dtf));
-        System.out.println("Withdraw : $" + amount);
-        System.out.println("Balance : $" + customer.getBalance());
-        System.out.println("1. Transaction");
-        System.out.println("2. Exit");
-        System.out.print("Choose option[2]: ");
-        String option = scanner.nextLine();
-        if(option.isEmpty()) option = "2";
-        switch (option) {
-            case "1":
-                transactionScreen ();
-                break;
-            case "2":
-                welcomeScreen();
-            default:
-                summaryScreen(amount);
-        }
-    }
-
-    private static void fundTransfer() {
-        // screen 1
-        String destinationAccount = fundTransferScreen1();
-        // screen 2
-        String amount = fundTransferScreen2();
-        // screen 3
-        String inputReference = fundTransferScreen3();
-        // screen 4
-        boolean confirmTrx = fundTransferScreen4(destinationAccount, amount, inputReference);
-
-        if (confirmTrx) {
-            calculateBalance(amount);
-            fundTransferSummary(destinationAccount, amount, inputReference);
-        } else {
-            transactionScreen();
-        }
-    }
-
-    private static String fundTransferScreen1() {
-        System.out.println("Please enter destination account and press enter to continue or");
-        System.out.print("press enter to go back to Transaction: ");
-        String destinationAccount = scanner.nextLine();
-        if (destinationAccount.isEmpty()) transactionScreen();
-        if (!isOnlyNumbers(destinationAccount) &&
-                customerService.getCustomerByAccountNumber(destinationAccount) == null) {
-            System.out.println("Invalid account");
-            destinationAccount = fundTransferScreen1();
-        } else {
-            return destinationAccount;
-        }
-        return destinationAccount;
-    }
-
-    private static String fundTransferScreen2() {
-        System.out.println("Please enter transfer amount and");
-        System.out.println("press enter to continue or");
-        System.out.print("press enter to go back to Transaction: ");
-        String amount = scanner.nextLine();
-        if (amount.isEmpty()) transactionScreen();
-        if (checkAmountTransferValidation(amount)) {
-            return amount;
-        } else amount = fundTransferScreen2();
-        return amount;
-    }
-
-    private static String fundTransferScreen3() {
-        int referenceNumber = getReferenceNumber();
-        System.out.println("Reference Number [" + referenceNumber + "]: ");
-        System.out.print("Press enter to continued ");
-        String inputReference = scanner.nextLine();
-        inputReference = inputReference.isEmpty() ? String.valueOf(referenceNumber) : inputReference;
-        if (!inputReference.isEmpty() && isOnlyNumbers(inputReference)) {
-            return inputReference;
-        } else {
-            System.out.println("Invalid Reference Number");
-            inputReference = fundTransferScreen3();
-        }
-        return inputReference;
-    }
-
-    private static boolean fundTransferScreen4(String destinationAccount, String amount, String inputReference) {
-        System.out.println("Transfer Confirmation");
-        System.out.println("Destination account: " + destinationAccount);
-        System.out.println("Transfer amount: $" + amount);
-        System.out.println("Reference number: " + inputReference);
-        System.out.println("1. Confirm Trx");
-        System.out.println("2. Cancel Trx");
-        System.out.print("Choose Option[2]: ");
-        String option = scanner.nextLine();
-        boolean valid = false;
-        switch (option) {
-            case "1":
-                valid = true;
-                break;
-            case "2":
-                break;
-            default:
-                fundTransferScreen4(destinationAccount, amount, inputReference);
-        }
-        return valid;
-    }
-
-    private static void fundTransferSummary(String destinationAccount, String amount, String referenceNumber) {
-        System.out.println("Fund Transfer Summary");
-        System.out.println("Destination account: " + destinationAccount);
-        System.out.println("Transfer amount: $" + amount);
-        System.out.println("Reference number: " + referenceNumber);
-        System.out.println("Balance: $" + customer.getBalance().intValue());
-        System.out.println("1. Transaction");
-        System.out.println("2. Exit");
-        System.out.print("Choose Option[2]: ");
-        String option = scanner.nextLine();
-        if (option.isEmpty()) option = "2";
-        switch (option) {
-            case "1":
-                transactionScreen();
-                break;
-            case "2":
-                welcomeScreen();
-                break;
-            default:
-                fundTransferSummary(destinationAccount, amount, referenceNumber);
-        }
-
-    }
-
-    private static boolean isLengthValid (String value) {
-        return value.length() == 6;
-    }
-
-    private static boolean isOnlyNumbers (String value) {
-        return value.matches("\\d+");
-    }
-
-    private static boolean isAccountNumberValid (String accountNumber) {
-        if (!isLengthValid(accountNumber)) {
-            System.out.println("Account Number should have 6 digits");
-        } else if (!isOnlyNumbers(accountNumber)) {
-            System.out.println("Account Number should only contains numbers");
-        } else {
-            return true;
-        }
-        return false;
-    }
-
-    private static boolean isPinValid (String pin) {
-        if (!isLengthValid(pin)) {
-            System.out.println("Pin should have 6 digits");
-        } else if (!isOnlyNumbers(pin)) {
-            System.out.println("Pin should only contains numbers");
-        } else {
-            return true;
-        }
-        return false;
-    }
-
-    private static boolean isCredentialValid (String accountNumber, String pin) {
-        Customer  c = customerService.getCustomerByAccountNumber(accountNumber);
-        if (c != null) {
-            customer = c;
-            return c.getPin().equalsIgnoreCase(pin);
-        }
-        return false;
-    }
-
-    private static boolean checkAmountValidation (String value) {
-        int amount;
-        if (!value.matches("\\d+")) {
-            System.out.println("Invalid ammount");
-        } else {
-            amount = Integer.parseInt(value);
-            if (amount > 1000) {
-                System.out.println("Maximum amount to withdraw is $1000");
-            } else if (amount % 10 != 0) {
-                System.out.println("Invalid ammount");
-            } else if (customer.getBalance().toBigInteger().intValue() < amount) {
-                System.out.printf("Insufficient balance $%d", amount);
-                System.out.println();
-            } else {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    private static boolean checkAmountTransferValidation(String value) {
-        int amount;
-        if (!value.matches("\\d+")) {
-            System.out.println("Invalid ammount");
-        } else {
-            amount = Integer.parseInt(value);
-            if (amount > 1000) {
-                System.out.println("Maximum amount to withdraw is $1000");
-            } else if (amount < 1) {
-                System.out.println("Minimum amount to withdraw is $1");
-            } else if (customer.getBalance().toBigInteger().intValue() < amount) {
-                System.out.printf("Insufficient balance $%d", amount);
-                System.out.println();
-            } else {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static int getReferenceNumber() {
-        int min = 100000;
-        int max = 999999;
-        return (int) (Math.random()*((max-min)+1))+min;
-    }
 }
