@@ -39,5 +39,8 @@ public class CustomerServiceImpl implements CustomerService{
         return getCustomerByAccountNumber(customer.getAccountNumber());
     }
 
-
+    @Override
+    public Customer doLogin(String accountNumber, String pinNumber) {
+        return getCustomerByAccountAndPinNumber(accountNumber, pinNumber);
+    }
 }

@@ -12,4 +12,8 @@ public interface CustomerService {
     Customer getCustomerByAccountAndPinNumber(String accountNumber, String pinNumber);
 
     Customer updateCustomer(Customer customer);
+
+    Customer doLogin(String accountNumber, String pinNumber);
+
+
 }
