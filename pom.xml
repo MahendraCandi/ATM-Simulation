@@ -33,6 +33,17 @@
           <target>8</target>
         </configuration>
       </plugin>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <mainClass>com.mahendracandi.mitrais_atm_simulation.App</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>
