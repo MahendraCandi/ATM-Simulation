@@ -22,6 +22,6 @@ public abstract class Screen {
         return this.defaultInput;
     }
 
-    protected abstract void validate();
+    protected abstract void readInput();
 
 }

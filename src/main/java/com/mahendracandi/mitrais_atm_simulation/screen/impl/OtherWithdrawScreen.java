@@ -11,7 +11,7 @@ public class OtherWithdrawScreen extends Screen {
     }
 
     @Override
-    protected void validate() {
+    protected void readInput() {
 
     }
 }

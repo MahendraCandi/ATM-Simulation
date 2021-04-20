@@ -16,11 +16,9 @@ public class LoginScreen extends Screen {
     public void showScreen() {
         AccountNumberScreen accountNumberScreen = new AccountNumberScreen();
         accountNumberScreen.showScreen();
-        String accountNumber = accountNumberScreen.doInput();
-        boolean isAccountNumberValid = validatorUtil.isAccountNumberValid(accountNumber);
-        if (!isAccountNumberValid) { // guard clause
-            return;
-        }
+        accountNumberScreen.readInput();
+        String accountNumber = accountNumberScreen.getAccountNumber();
+
         PinNumberScreen pinNumberScreen = new PinNumberScreen();
         pinNumberScreen.showScreen();
         String pinNumber = pinNumberScreen.doInput();
@@ -37,7 +35,7 @@ public class LoginScreen extends Screen {
     }
 
     @Override
-    protected void validate() {
+    protected void readInput() {
 
     }
 

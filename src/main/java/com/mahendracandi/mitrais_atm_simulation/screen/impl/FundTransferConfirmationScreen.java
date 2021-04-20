@@ -22,7 +22,7 @@ public class FundTransferConfirmationScreen extends Screen {
     }
 
     @Override
-    protected void validate() {
+    protected void readInput() {
 
     }
 }

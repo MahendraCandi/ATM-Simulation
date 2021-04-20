@@ -16,7 +16,7 @@ public class TransactionScreen extends Screen {
     }
 
     @Override
-    protected void validate() {
+    protected void readInput() {
 
     }
 

@@ -19,7 +19,7 @@ public class ReferenceNumberScreen extends Screen {
     }
 
     @Override
-    protected void validate() {
+    protected void readInput() {
 
     }
 }

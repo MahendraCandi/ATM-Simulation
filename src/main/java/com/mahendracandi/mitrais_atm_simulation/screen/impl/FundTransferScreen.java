@@ -39,7 +39,7 @@ public class FundTransferScreen extends Screen {
     }
 
     @Override
-    protected void validate() {
+    protected void readInput() {
 
     }
 

@@ -25,7 +25,7 @@ public class SummaryScreen extends Screen {
     }
 
     @Override
-    protected void validate() {
+    protected void readInput() {
 
     }
 }

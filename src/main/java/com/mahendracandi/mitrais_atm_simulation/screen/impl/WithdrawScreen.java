@@ -18,7 +18,7 @@ public class WithdrawScreen extends Screen {
         this.setDefaultInput("5");
     }
 
-    public void validate() {
+    public void readInput() {
 
     }
 }

@@ -12,7 +12,7 @@ public class TransferAmountScreen extends Screen {
     }
 
     @Override
-    protected void validate() {
+    protected void readInput() {
 
     }
 }
