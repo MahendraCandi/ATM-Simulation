@@ -9,4 +9,9 @@ public class AccountNumberScreen extends Screen {
     public void showScreen() {
         MessageUtil.printMessage("Enter account number: ");
     }
+
+    @Override
+    protected void validate() {
+
+    }
 }

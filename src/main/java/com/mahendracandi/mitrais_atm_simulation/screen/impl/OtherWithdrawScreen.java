@@ -9,4 +9,9 @@ public class OtherWithdrawScreen extends Screen {
         MessageUtil.printMessage("Other Withdraw");
         MessageUtil.printMessage("Enter amount to withdraw: ");
     }
+
+    @Override
+    protected void validate() {
+
+    }
 }

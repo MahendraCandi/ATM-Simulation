@@ -38,6 +38,11 @@ public class FundTransferScreen extends Screen {
         setFundTransfer(fundTransfer);
     }
 
+    @Override
+    protected void validate() {
+
+    }
+
     public FundTransfer getFundTransfer() {
         return fundTransfer;
     }

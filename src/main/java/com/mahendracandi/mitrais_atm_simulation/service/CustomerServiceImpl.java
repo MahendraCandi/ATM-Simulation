@@ -29,7 +29,7 @@ public class CustomerServiceImpl implements CustomerService{
     public Customer getCustomerByAccountAndPinNumber(String accountNumber, String pinNumber) {
         return customers.stream()
                 .filter(p -> p.getAccountNumber().equals(accountNumber) && p.getPin().equals(pinNumber))
-                .findFirst().orElse(null);
+                .findFirst().orElse(null); // using exception is good recomended
     }
 
     @Override

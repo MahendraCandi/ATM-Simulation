@@ -10,4 +10,9 @@ public class PinNumberScreen extends Screen {
         MessageUtil.printMessage("Enter PIN: ");
     }
 
+    @Override
+    protected void validate() {
+
+    }
+
 }

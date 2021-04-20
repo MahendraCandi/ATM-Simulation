@@ -20,4 +20,9 @@ public class FundTransferConfirmationScreen extends Screen {
         MessageUtil.printMessage("Choose option[2]");
         this.setDefaultInput("2");
     }
+
+    @Override
+    protected void validate() {
+
+    }
 }

@@ -10,4 +10,9 @@ public class TransferAmountScreen extends Screen {
                 "press enter to continue or\n" +
                 "Press enter to go back to Transaction: ");
     }
+
+    @Override
+    protected void validate() {
+
+    }
 }

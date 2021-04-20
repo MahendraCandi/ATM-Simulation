@@ -18,20 +18,27 @@ public class LoginScreen extends Screen {
         accountNumberScreen.showScreen();
         String accountNumber = accountNumberScreen.doInput();
         boolean isAccountNumberValid = validatorUtil.isAccountNumberValid(accountNumber);
-        if (isAccountNumberValid) {
-            PinNumberScreen pinNumberScreen = new PinNumberScreen();
-            pinNumberScreen.showScreen();
-            String pinNumber = pinNumberScreen.doInput();
-            boolean isPinNumberValid = validatorUtil.isPinNumberValid(pinNumber);
-            if (isPinNumberValid) {
-                Customer customer = customerService.doLogin(accountNumber, pinNumber);
-                boolean isCustomerLoginValid = validatorUtil.isCustomerLoginValid(customer);
-                if (isCustomerLoginValid) {
-                    this.customer = customer;
-                }
-
-            }
+        if (!isAccountNumberValid) { // guard clause
+            return;
         }
+        PinNumberScreen pinNumberScreen = new PinNumberScreen();
+        pinNumberScreen.showScreen();
+        String pinNumber = pinNumberScreen.doInput();
+        boolean isPinNumberValid = validatorUtil.isPinNumberValid(pinNumber);
+        if (!isPinNumberValid) {
+            return;
+        }
+        Customer customer = customerService.doLogin(accountNumber, pinNumber);
+        boolean isCustomerLoginValid = validatorUtil.isCustomerLoginValid(customer);
+        if (isCustomerLoginValid) {
+            this.customer = customer;
+        }
+
+    }
+
+    @Override
+    protected void validate() {
+
     }
 
     public Customer getCustomer() {

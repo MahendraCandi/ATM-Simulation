@@ -95,6 +95,7 @@ public class App {
             FundTransferConfirmationScreen fundTransferConfirmationScreen = new FundTransferConfirmationScreen(fundTransfer);
             fundTransferConfirmationScreen.showScreen();
             String input = fundTransferConfirmationScreen.doInput();
+            // funcTransferConf.validate();
             switch (input) {
                 case "1":
                     ScreenUtil<FundTransfer> validateFundTransferScreen = validateFundTransfer(fundTransfer, customer);

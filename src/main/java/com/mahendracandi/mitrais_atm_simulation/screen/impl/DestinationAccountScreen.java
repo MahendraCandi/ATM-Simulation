@@ -9,4 +9,9 @@ public class DestinationAccountScreen extends Screen {
         MessageUtil.printMessage("Please enter destination account and press enter to continue or");
         MessageUtil.printMessage("press enter to go back to Transaction: ");
     }
+
+    @Override
+    protected void validate() {
+
+    }
 }

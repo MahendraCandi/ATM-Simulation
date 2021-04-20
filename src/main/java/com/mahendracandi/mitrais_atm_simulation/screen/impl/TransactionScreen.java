@@ -15,4 +15,9 @@ public class TransactionScreen extends Screen {
         this.setDefaultInput("3");
     }
 
+    @Override
+    protected void validate() {
+
+    }
+
 }

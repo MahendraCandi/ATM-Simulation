@@ -5,6 +5,8 @@ import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
 
 public class WithdrawScreen extends Screen {
 
+
+
     @Override
     public void showScreen() {
         MessageUtil.printMessage("1. $10");
@@ -14,5 +16,9 @@ public class WithdrawScreen extends Screen {
         MessageUtil.printMessage("5. Back");
         MessageUtil.printMessage("Please choose option[5]: ");
         this.setDefaultInput("5");
+    }
+
+    public void validate() {
+
     }
 }

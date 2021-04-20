@@ -23,4 +23,9 @@ public class SummaryScreen extends Screen {
         MessageUtil.printMessage("Choose Option[2]");
         this.setDefaultInput("2");
     }
+
+    @Override
+    protected void validate() {
+
+    }
 }

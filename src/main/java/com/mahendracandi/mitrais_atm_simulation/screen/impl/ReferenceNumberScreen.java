@@ -17,4 +17,9 @@ public class ReferenceNumberScreen extends Screen {
         MessageUtil.printMessage("Press enter to continued ");
         setDefaultInput(referenceNumber);
     }
+
+    @Override
+    protected void validate() {
+
+    }
 }
