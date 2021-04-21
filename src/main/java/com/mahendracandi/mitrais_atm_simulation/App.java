@@ -40,7 +40,6 @@ public class App {
         boolean exit = false;
         ScreenUtil<String> screenUtil = new ScreenUtil<>();
         do {
-            TransactionService transactionService = new TransactionServiceImpl();
             TransactionScreen transactionScreen = new TransactionScreen();
             transactionScreen.showScreen();
             String option = transactionScreen.doInput();
@@ -55,8 +54,6 @@ public class App {
                             withdrawScreen.getPayload(),
                             LocalDateTime.now());
                     if (withdrawSummaryScreen.isBackScreen()) continue;
-
-                    transactionService.doTransaction(withdrawSummaryScreen.getPayload());
                     break;
                 case "2":
                     ScreenUtil<FundTransfer> fundTransferScreenUtil = readFundTransfer();
@@ -75,8 +72,6 @@ public class App {
                             fundTransfer.getDestinationCustomer(),
                             fundTransfer.getReferenceNumber());
                     if (fundTransferSummaryScreen.isBackScreen()) continue;
-
-                    transactionService.doTransaction(fundTransferSummaryScreen.getPayload());
                     break;
                 case "3":
                     exit = true;
@@ -94,7 +89,7 @@ public class App {
             FundTransferConfirmationScreen fundTransferConfirmationScreen = new FundTransferConfirmationScreen(fundTransfer);
             fundTransferConfirmationScreen.showScreen();
             String input = fundTransferConfirmationScreen.doInput();
-            // funcTransferConf.validate();
+
             switch (input) {
                 case "1":
                     ScreenUtil<FundTransfer> validateFundTransferScreen = validateFundTransfer(fundTransfer, customer);
@@ -183,12 +178,14 @@ public class App {
 
     private ScreenUtil<Transaction> readSummaryScreen(TransactionType transactionType, Transaction transaction) {
         ScreenUtil<Transaction> screenUtil = new ScreenUtil<>();
+        TransactionService transactionService = new TransactionServiceImpl();
         SummaryScreen summaryScreen = new SummaryScreen(transaction, transactionType);
         summaryScreen.showScreen();
         String input = summaryScreen.doInput();
         switch (input) {
             case "1":
                 screenUtil.setPayload(transaction);
+                transactionService.doTransaction(transaction);
                 break;
             case "2":
                 screenUtil.setBackScreen(true);
