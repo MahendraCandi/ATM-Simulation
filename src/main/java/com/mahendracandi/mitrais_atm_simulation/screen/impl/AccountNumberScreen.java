@@ -6,8 +6,6 @@ import com.mahendracandi.mitrais_atm_simulation.util.ValidatorUtil;
 
 public class AccountNumberScreen extends Screen {
 
-    private String accountNumber;
-
     private final ValidatorUtil validatorUtil = new ValidatorUtil();
 
     @Override
@@ -18,14 +16,14 @@ public class AccountNumberScreen extends Screen {
     @Override
     protected void readInput() {
         String accountNumber = doInput();
+
         boolean isAccountNumberValid = validatorUtil.isAccountNumberValid(accountNumber);
-        if (!isAccountNumberValid) { // guard clause
+        if (!isAccountNumberValid) {
+            this.existScreen = true;
             return;
         }
-        this.accountNumber = accountNumber;
+
+        this.input = accountNumber;
     }
 
-    public String getAccountNumber() {
-        return this.accountNumber;
-    }
 }
