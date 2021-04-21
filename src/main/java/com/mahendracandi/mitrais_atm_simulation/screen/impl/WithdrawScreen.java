@@ -3,7 +3,6 @@ package com.mahendracandi.mitrais_atm_simulation.screen.impl;
 import com.mahendracandi.mitrais_atm_simulation.model.Customer;
 import com.mahendracandi.mitrais_atm_simulation.screen.Screen;
 import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
-import com.mahendracandi.mitrais_atm_simulation.util.ValidatorUtil;
 
 import java.math.BigDecimal;
 
