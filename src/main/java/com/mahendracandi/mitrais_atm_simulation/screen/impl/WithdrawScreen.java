@@ -1,14 +1,17 @@
 package com.mahendracandi.mitrais_atm_simulation.screen.impl;
 
+import com.mahendracandi.mitrais_atm_simulation.appEnum.TransactionType;
 import com.mahendracandi.mitrais_atm_simulation.model.Customer;
+import com.mahendracandi.mitrais_atm_simulation.model.ScreenHelper;
+import com.mahendracandi.mitrais_atm_simulation.model.Transaction;
 import com.mahendracandi.mitrais_atm_simulation.screen.Screen;
 import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class WithdrawScreen extends Screen {
 
-    private BigDecimal amount;
     private Customer customer;
 
     public WithdrawScreen() {
@@ -31,7 +34,42 @@ public class WithdrawScreen extends Screen {
 
     @Override
     public void readInput() {
-        String input = doInput();
+        boolean exitLoop = false;
+        do{
+            showScreen();
+            String input = doInput();
+            ScreenHelper screenHelper = processAmount(input);
+            if (screenHelper.isInputNotValid()) {
+                continue;
+            }
+
+            if (screenHelper.isReturnToTransactionScreen()) {
+                // return to transaction screen
+                this.existScreen = true;
+                break;
+            }
+
+            BigDecimal amount = screenHelper.getAmount();
+            TransactionType transactionType = TransactionType.WITHDRAW;
+
+            Transaction transaction = new Transaction();
+            transaction.setTransactionType(transactionType);
+            transaction.setCustomer(customer);
+            transaction.setAmount(amount);
+            transaction.setDate(LocalDateTime.now());
+
+            SummaryScreen withdrawSummaryScreen = new SummaryScreen(transaction, transactionType);
+            withdrawSummaryScreen.readInput();
+
+            if (withdrawSummaryScreen.isExistScreen()) {
+                this.existScreen = true;
+            }
+            exitLoop = true;
+        }while (!exitLoop);
+    }
+
+    private ScreenHelper processAmount(String input) {
+        ScreenHelper screenHelper = new ScreenHelper();
         BigDecimal amount = null;
         switch (input) {
             case "1":
@@ -52,16 +90,12 @@ public class WithdrawScreen extends Screen {
                 }
                 break;
             case "5":
-                this.existScreen = true;
+                screenHelper.setReturnToTransactionScreen(true);
                 break;
             default:
-                showScreen();
-                readInput();
+                screenHelper.setInputNotValid(true);
         }
-        this.amount = amount;
-    }
-
-    public BigDecimal getAmount() {
-        return this.amount;
+        screenHelper.setAmount(amount);
+        return screenHelper;
     }
 }
