@@ -29,10 +29,9 @@ public class App {
             loginScreen.showScreen();
             Customer customer = loginScreen.getCustomer();
 
-            if (customer != null) {
-                ScreenUtil<String> screenUtil = app.showTransaction(customer);
-                if (screenUtil.isBackScreen()) exit = true;
-            }
+            ScreenUtil<String> screenUtil = app.showTransaction(customer);
+            if (screenUtil.isBackScreen()) exit = true;
+
         } while (!exit);
         MessageUtil.printMessage("Bye");
     }
