@@ -1,6 +1,7 @@
 package com.mahendracandi.mitrais_atm_simulation.service;
 
 import com.mahendracandi.mitrais_atm_simulation.model.Customer;
+import com.mahendracandi.mitrais_atm_simulation.util.ValidatorUtil.ValidationResult;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -22,14 +23,14 @@ public class CustomerServiceImpl implements CustomerService{
     public Customer getCustomerByAccountNumber(String accountNumber) {
         return customers.stream()
                 .filter(p -> p.getAccountNumber().equals(accountNumber))
-                .findFirst().orElse(null);
+                .findFirst().orElseThrow(() -> new IllegalArgumentException(ValidationResult.LOGIN_INVALID.value));
     }
 
     @Override
     public Customer getCustomerByAccountAndPinNumber(String accountNumber, String pinNumber) {
         return customers.stream()
                 .filter(p -> p.getAccountNumber().equals(accountNumber) && p.getPin().equals(pinNumber))
-                .findFirst().orElse(null); // using exception is good recomended
+                .findFirst().orElseThrow(() -> new IllegalArgumentException(ValidationResult.LOGIN_INVALID.value));
     }
 
     @Override
