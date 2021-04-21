@@ -45,13 +45,11 @@ public class WithdrawScreen extends Screen {
                 amount = new BigDecimal("100");
                 break;
             case "4":
-                OtherWithdrawScreen otherWithdrawScreen = new OtherWithdrawScreen();
+                OtherWithdrawScreen otherWithdrawScreen = new OtherWithdrawScreen(customer);
                 otherWithdrawScreen.showScreen();
-                String otherAmount = otherWithdrawScreen.doInput();
-                ValidatorUtil validatorUtil = new ValidatorUtil();
-                boolean isWithdrawAmountValid = validatorUtil.isWithdrawAmountValid(otherAmount, customer);
-                if (isWithdrawAmountValid) {
-                    amount = new BigDecimal(otherAmount);
+                otherWithdrawScreen.readInput();
+                if(!otherWithdrawScreen.isExistScreen()) {
+                    amount = otherWithdrawScreen.getAmount();
                 }
                 break;
             case "5":
