@@ -17,21 +17,20 @@ public class LoginScreen extends Screen {
         AccountNumberScreen accountNumberScreen = new AccountNumberScreen();
         accountNumberScreen.showScreen();
         accountNumberScreen.readInput();
-        String accountNumber = accountNumberScreen.getAccountNumber();
+        if (accountNumberScreen.isExistScreen()) return;
+        String accountNumber = accountNumberScreen.getInput();
 
         PinNumberScreen pinNumberScreen = new PinNumberScreen();
         pinNumberScreen.showScreen();
-        String pinNumber = pinNumberScreen.doInput();
-        boolean isPinNumberValid = validatorUtil.isPinNumberValid(pinNumber);
-        if (!isPinNumberValid) {
-            return;
-        }
+        pinNumberScreen.readInput();
+        if (pinNumberScreen.isExistScreen()) return;
+        String pinNumber = pinNumberScreen.getInput();
+
         Customer customer = customerService.doLogin(accountNumber, pinNumber);
         boolean isCustomerLoginValid = validatorUtil.isCustomerLoginValid(customer);
         if (isCustomerLoginValid) {
             this.customer = customer;
         }
-
     }
 
     @Override
