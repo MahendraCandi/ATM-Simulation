@@ -3,12 +3,15 @@ package com.mahendracandi.mitrais_atm_simulation.screen.impl;
 import com.mahendracandi.mitrais_atm_simulation.appEnum.TransactionType;
 import com.mahendracandi.mitrais_atm_simulation.model.Transaction;
 import com.mahendracandi.mitrais_atm_simulation.screen.Screen;
+import com.mahendracandi.mitrais_atm_simulation.service.TransactionService;
+import com.mahendracandi.mitrais_atm_simulation.service.TransactionServiceImpl;
 import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
 
 public class SummaryScreen extends Screen {
 
     private final Transaction transaction;
     private final TransactionType transactionType;
+    private final TransactionService transactionService = new TransactionServiceImpl();
 
     public SummaryScreen(Transaction transaction, TransactionType transactionType) {
         this.transaction = transaction;
@@ -26,6 +29,17 @@ public class SummaryScreen extends Screen {
 
     @Override
     protected void readInput() {
-
+        showScreen();
+        String option = doInput();
+        switch (option) {
+            case "1":
+                transactionService.doTransaction(transaction);
+                break;
+            case "2":
+                this.existScreen = true;
+                break;
+            default:
+                readInput();
+        }
     }
 }
