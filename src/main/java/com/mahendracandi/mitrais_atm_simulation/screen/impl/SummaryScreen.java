@@ -1,41 +1,43 @@
 package com.mahendracandi.mitrais_atm_simulation.screen.impl;
 
 import com.mahendracandi.mitrais_atm_simulation.appEnum.TransactionType;
+import com.mahendracandi.mitrais_atm_simulation.controller.TransactionController;
+import com.mahendracandi.mitrais_atm_simulation.model.AppResponse;
 import com.mahendracandi.mitrais_atm_simulation.model.Transaction;
 import com.mahendracandi.mitrais_atm_simulation.screen.Screen;
-import com.mahendracandi.mitrais_atm_simulation.service.TransactionService;
-import com.mahendracandi.mitrais_atm_simulation.service.TransactionServiceImpl;
 import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
 
 public class SummaryScreen extends Screen {
 
     private final Transaction transaction;
     private final TransactionType transactionType;
-    private final TransactionService transactionService = new TransactionServiceImpl();
+    private final TransactionController transactionController = new TransactionController();
 
     public SummaryScreen(Transaction transaction, TransactionType transactionType) {
         this.transaction = transaction;
         this.transactionType = transactionType;
     }
 
-    @Override
-    public void showScreen() {
-        MessageUtil.printMessage(transaction.toString(transactionType));
-        MessageUtil.printMessage("1. Transaction");
-        MessageUtil.printMessage("2. Exit");
-        MessageUtil.printMessage("Choose Option[2]");
-        this.setDefaultInput("2");
+    public SummaryScreen(Transaction transaction) {
+        this.transaction = transaction;
+        this.transactionType = transaction.getTransactionType();
     }
 
     @Override
-    protected void readInput() {
+    public void showScreen() {
         boolean exitLoop = false;
         do {
-            showScreen();
-            String option = doInput();
+            MessageUtil.printMessage(transaction.toString());
+            MessageUtil.printMessage("1. Transaction");
+            MessageUtil.printMessage("2. Exit");
+            MessageUtil.printMessage("Choose Option[2]");
+            String option = doInput("2");
             switch (option) {
                 case "1":
-                    transactionService.doTransaction(transaction);
+                    AppResponse<Transaction> appResponse = transactionController.doTransaction(transaction);
+                    if (!appResponse.getStatus()) {
+                        MessageUtil.printAllErrorMessage(appResponse.getMessage());
+                    }
                     exitLoop = true;
                     break;
                 case "2":
@@ -43,5 +45,10 @@ public class SummaryScreen extends Screen {
                     break;
             }
         } while (!exitLoop);
+    }
+
+    @Override
+    protected void readInput() {
+
     }
 }
