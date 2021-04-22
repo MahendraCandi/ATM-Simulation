@@ -1,5 +1,6 @@
 package com.mahendracandi.mitrais_atm_simulation.screen.impl;
 
+import com.mahendracandi.mitrais_atm_simulation.model.Customer;
 import com.mahendracandi.mitrais_atm_simulation.model.FundTransfer;
 import com.mahendracandi.mitrais_atm_simulation.screen.Screen;
 import com.mahendracandi.mitrais_atm_simulation.util.AppUtil;
@@ -8,9 +9,21 @@ public class FundTransferScreen extends Screen {
 
     private final AppUtil appUtil = new AppUtil();
     private FundTransfer fundTransfer;
+    private Customer customer;
+
+    public FundTransferScreen() {
+    }
+
+    public FundTransferScreen(Customer customer) {
+        this.customer = customer;
+    }
 
     @Override
     public void showScreen() {
+    }
+
+    @Override
+    protected void readInput() {
         DestinationAccountScreen destinationAccountScreen = new DestinationAccountScreen();
         destinationAccountScreen.showScreen();
         String destinationAccount = destinationAccountScreen.doInput();
@@ -35,12 +48,8 @@ public class FundTransferScreen extends Screen {
         fundTransfer.setTransferAmount(transferAmount);
         fundTransfer.setReferenceNumber(referenceNumber);
 
-        setFundTransfer(fundTransfer);
-    }
-
-    @Override
-    protected void readInput() {
-
+        FundTransferConfirmationScreen fundTransferConfirmationScreen = new FundTransferConfirmationScreen(fundTransfer, customer);
+        fundTransferConfirmationScreen.readInput();
     }
 
     public FundTransfer getFundTransfer() {
