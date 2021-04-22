@@ -14,6 +14,11 @@ public class LoginScreen extends Screen {
 
     @Override
     public void showScreen() {
+
+    }
+
+    @Override
+    public void readInput() {
         AccountNumberScreen accountNumberScreen = new AccountNumberScreen();
         accountNumberScreen.showScreen();
         accountNumberScreen.readInput();
@@ -27,15 +32,11 @@ public class LoginScreen extends Screen {
         String pinNumber = pinNumberScreen.getInput();
 
         Customer customer = customerService.doLogin(accountNumber, pinNumber);
+
         boolean isCustomerLoginValid = validatorUtil.isCustomerLoginValid(customer);
         if (isCustomerLoginValid) {
             this.customer = customer;
         }
-    }
-
-    @Override
-    protected void readInput() {
-
     }
 
     public Customer getCustomer() {

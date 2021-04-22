@@ -18,12 +18,9 @@ public class AccountNumberScreen extends Screen {
         String accountNumber = doInput();
 
         boolean isAccountNumberValid = validatorUtil.isAccountNumberValid(accountNumber);
-        if (!isAccountNumberValid) {
-            this.existScreen = true;
-            return;
+        if (isAccountNumberValid) {
+            this.input = accountNumber;
         }
-
-        this.input = accountNumber;
     }
 
 }

@@ -16,11 +16,9 @@ public class PinNumberScreen extends Screen {
     protected void readInput() {
         String pinNumber = doInput();
         boolean isPinNumberValid = validatorUtil.isPinNumberValid(pinNumber);
-        if (!isPinNumberValid) {
-            this.existScreen = true;
-            return;
+        if (isPinNumberValid) {
+            this.input = pinNumber;
         }
-        this.input = pinNumber;
     }
 
 }
