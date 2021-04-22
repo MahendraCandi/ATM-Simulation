@@ -65,6 +65,11 @@ public class Transaction {
 
     @Override
     public String toString() {
+        if (transactionType.equals(TransactionType.WITHDRAW)) {
+            return withdrawTransactionToString();
+        } else if (transactionType.equals(TransactionType.FUND_TRANSFER)) {
+            return fundTransferToString();
+        }
         return "Transaction{" +
                 "transactionType=" + transactionType +
                 ", customer=" + customer +
