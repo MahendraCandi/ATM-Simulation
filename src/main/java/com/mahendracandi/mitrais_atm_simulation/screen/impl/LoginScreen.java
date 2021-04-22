@@ -25,10 +25,7 @@ public class LoginScreen extends Screen {
                 exit = true;
                 customer = appResponse.getData();
             } else {
-                String errorMessage = appResponse.getMessage();
-                for (String message : errorMessage.split(MessageUtil.MESSAGE_DELIMITER)) {
-                    MessageUtil.printInvalidMessage(message);
-                }
+                MessageUtil.printAllErrorMessage(appResponse.getMessage());
             }
         } while (!exit);
     }
