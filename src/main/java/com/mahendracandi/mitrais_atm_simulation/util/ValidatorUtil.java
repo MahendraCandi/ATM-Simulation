@@ -20,7 +20,7 @@ public class ValidatorUtil {
         INVALID_AMOUNT("Invalid Amount"),
         INVALID_MAXIMUM_AMOUNT("Maximum amount to withdraw is $1000"),
         INVALID_MINIMUM_AMOUNT("Minimum amount to withdraw is $1"),
-        INSUFFICIENT_BALANCE("Insufficient balance $%d"),
+        INSUFFICIENT_BALANCE("Insufficient balance"),
         INVALID_ACCOUNT("Invalid account"),
         INVALID_REFERENCE_NUMBER("Invalid Reference Number"),
         SUCCESS("Success");
