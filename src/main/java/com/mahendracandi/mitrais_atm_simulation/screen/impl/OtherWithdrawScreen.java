@@ -1,43 +1,43 @@
 package com.mahendracandi.mitrais_atm_simulation.screen.impl;
 
-import com.mahendracandi.mitrais_atm_simulation.model.Customer;
+import com.mahendracandi.mitrais_atm_simulation.controller.OtherWithdrawController;
+import com.mahendracandi.mitrais_atm_simulation.model.AppResponse;
 import com.mahendracandi.mitrais_atm_simulation.screen.Screen;
 import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
-import com.mahendracandi.mitrais_atm_simulation.util.ValidatorUtil;
 
 import java.math.BigDecimal;
 
 public class OtherWithdrawScreen extends Screen {
 
+    private final OtherWithdrawController otherWithdrawController = new OtherWithdrawController();
     private BigDecimal amount;
-    private Customer customer;
-
-    public OtherWithdrawScreen() {
-    }
-
-    public OtherWithdrawScreen(Customer customer) {
-        this.customer = customer;
-    }
+    private boolean isInputValid;
 
     @Override
     public void showScreen() {
         MessageUtil.printMessage("Other Withdraw");
         MessageUtil.printMessage("Enter amount to withdraw: ");
+        String input = doInput();
+
+        AppResponse<BigDecimal> appResponse = otherWithdrawController.readWithdrawInput(input);
+        if (appResponse.getStatus()) {
+            isInputValid = true;
+            amount = appResponse.getData();
+        } else {
+            MessageUtil.printAllErrorMessage(appResponse.getMessage());
+        }
     }
 
     @Override
     protected void readInput() {
-        String input = doInput();
-        ValidatorUtil validatorUtil = new ValidatorUtil();
-        boolean isWithdrawAmountValid = validatorUtil.isWithdrawAmountValid(input, customer);
-        if (!isWithdrawAmountValid) {
-            this.existScreen = true;
-            return;
-        }
-        this.amount = new BigDecimal(input);
+
     }
 
     public BigDecimal getAmount() {
         return this.amount;
+    }
+
+    public boolean isInputValid() {
+        return isInputValid;
     }
 }
