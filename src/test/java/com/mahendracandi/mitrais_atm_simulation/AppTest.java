@@ -3,6 +3,7 @@ package com.mahendracandi.mitrais_atm_simulation;
 import com.mahendracandi.mitrais_atm_simulation.model.Customer;
 import com.mahendracandi.mitrais_atm_simulation.service.CustomerService;
 import com.mahendracandi.mitrais_atm_simulation.service.CustomerServiceImpl;
+import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
 import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -63,5 +64,16 @@ public class AppTest
                 .stream()
                 .filter(p -> p.getAccountNumber().equals("112244"))
                 .findFirst().get().getName());
+    }
+
+    public void testMessageDelimiter() {
+        MessageUtil messageUtil = new MessageUtil();
+        String message = "";
+
+        message += messageUtil.addDelimiter("hello");
+        message += messageUtil.addDelimiter("world");
+        message = messageUtil.deleteLastDelimiter(message);
+
+        Assert.assertEquals("hello;world", message);
     }
 }
