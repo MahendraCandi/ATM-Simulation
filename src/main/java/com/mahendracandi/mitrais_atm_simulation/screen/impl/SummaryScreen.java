@@ -29,17 +29,19 @@ public class SummaryScreen extends Screen {
 
     @Override
     protected void readInput() {
-        showScreen();
-        String option = doInput();
-        switch (option) {
-            case "1":
-                transactionService.doTransaction(transaction);
-                break;
-            case "2":
-                this.existScreen = true;
-                break;
-            default:
-                readInput();
-        }
+        boolean exitLoop = false;
+        do {
+            showScreen();
+            String option = doInput();
+            switch (option) {
+                case "1":
+                    transactionService.doTransaction(transaction);
+                    exitLoop = true;
+                    break;
+                case "2":
+                    exitLoop = true;
+                    break;
+            }
+        } while (!exitLoop);
     }
 }
