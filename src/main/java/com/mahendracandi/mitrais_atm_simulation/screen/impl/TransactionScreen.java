@@ -7,10 +7,7 @@ import static com.mahendracandi.mitrais_atm_simulation.util.MessageUtil.printMes
 
 public class TransactionScreen extends Screen {
 
-    private Customer customer;
-
-    public TransactionScreen() {
-    }
+    private final Customer customer;
 
     public TransactionScreen(Customer customer) {
         this.customer = customer;
@@ -18,23 +15,17 @@ public class TransactionScreen extends Screen {
 
     @Override
     public void showScreen() {
-        printMessage("1. Withdraw");
-        printMessage("2. Fund Transfer");
-        printMessage("3. Exit");
-        printMessage("Please choose option[3]: ");
-        this.setDefaultInput("3");
-    }
-
-    @Override
-    public void readInput() {
         boolean exitLoop = false;
         do {
-            showScreen();
-            String option = doInput();
+            printMessage("1. Withdraw");
+            printMessage("2. Fund Transfer");
+            printMessage("3. Exit");
+            printMessage("Please choose option[3]: ");
+            String option = doInput("3");
             switch (option) {
                 case "1":
                     WithdrawScreen withdrawScreen = new WithdrawScreen(customer);
-                    withdrawScreen.readInput();
+                    withdrawScreen.showScreen();
                     if (withdrawScreen.isExistScreen()) continue;
                     break;
                 case "2":
@@ -45,7 +36,11 @@ public class TransactionScreen extends Screen {
                     this.existScreen = true;
                     exitLoop = true;
             }
-        } while (!exitLoop);
+        } while (!exitLoop) ;
+    }
+
+    @Override
+    public void readInput() {
 
     }
 
