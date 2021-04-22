@@ -22,7 +22,8 @@ public class ValidatorUtil {
         INVALID_MINIMUM_AMOUNT("Minimum amount to withdraw is $1"),
         INSUFFICIENT_BALANCE("Insufficient balance $%d"),
         INVALID_ACCOUNT("Invalid account"),
-        INVALID_REFERENCE_NUMBER("Invalid Reference Number");
+        INVALID_REFERENCE_NUMBER("Invalid Reference Number"),
+        SUCCESS("Success");
 
         public final String value;
 
