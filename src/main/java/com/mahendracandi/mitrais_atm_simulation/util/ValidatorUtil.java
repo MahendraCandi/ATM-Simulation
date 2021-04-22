@@ -5,6 +5,7 @@ import com.mahendracandi.mitrais_atm_simulation.service.CustomerService;
 import com.mahendracandi.mitrais_atm_simulation.service.CustomerServiceImpl;
 
 import static com.mahendracandi.mitrais_atm_simulation.util.MessageUtil.printInvalidMessage;
+import static com.mahendracandi.mitrais_atm_simulation.util.ValidatorUtil.ValidationResult.*;
 
 public class ValidatorUtil {
 
@@ -31,34 +32,28 @@ public class ValidatorUtil {
     }
 
     public boolean isAccountNumberValid(String accountNumber) {
-        boolean result = true;
         if (!appUtil.isLengthValid(accountNumber)) {
-            printInvalidMessage(ValidationResult.ACCOUNT_NUMBER_LENGTH_NOT_VALID.value);
-            result = false;
+            throw new IllegalStateException(ACCOUNT_NUMBER_LENGTH_NOT_VALID.value);
         }
         if (!appUtil.isOnlyNumbers(accountNumber)) {
-            printInvalidMessage(ValidationResult.ACCOUNT_NUMBER_NOT_NUMBERS.value);
-            result = false;
+            throw new IllegalStateException(ACCOUNT_NUMBER_NOT_NUMBERS.value);
         }
-        return result;
+        return true;
     }
 
     public boolean isPinNumberValid(String pinNumber) {
-        boolean result = true;
         if (!appUtil.isLengthValid(pinNumber)) {
-            printInvalidMessage(ValidationResult.PIN_LENGTH_NOT_VALID.value);
-            result = false;
+            throw new IllegalStateException(PIN_LENGTH_NOT_VALID.value);
         }
         if (!appUtil.isOnlyNumbers(pinNumber)) {
-            printInvalidMessage(ValidationResult.PIN_NOT_NUMBERS.value);
-            result = false;
+            throw new IllegalStateException(PIN_NOT_NUMBERS.value);
         }
-        return result;
+        return true;
     }
 
     public boolean isCustomerLoginValid(Customer customer) {
         if (customer == null) {
-            printInvalidMessage(ValidationResult.LOGIN_INVALID.value);
+            printInvalidMessage(LOGIN_INVALID.value);
             return false;
         }
         return true;
@@ -91,7 +86,7 @@ public class ValidatorUtil {
 
     public boolean isAmountStrContainOnlyNumbers(String amount) {
         if(!appUtil.isOnlyNumbers(amount)) {
-            printInvalidMessage(ValidationResult.INVALID_AMOUNT.value);
+            printInvalidMessage(INVALID_AMOUNT.value);
             return false;
         }
         return true;
@@ -99,7 +94,7 @@ public class ValidatorUtil {
 
     public boolean isValueMultipleOfTen(int amount) {
         if (!appUtil.isValueMultipleOfTen(amount)) {
-            printInvalidMessage(ValidationResult.INVALID_AMOUNT.value);
+            printInvalidMessage(INVALID_AMOUNT.value);
             return false;
         }
         return true;
@@ -109,7 +104,7 @@ public class ValidatorUtil {
         if(!appUtil.isValueMoreThanMaximumAmount(amount)) {
             return true;
         }
-        printInvalidMessage(ValidationResult.INVALID_MAXIMUM_AMOUNT.value);
+        printInvalidMessage(INVALID_MAXIMUM_AMOUNT.value);
         return false;
     }
 
@@ -117,13 +112,13 @@ public class ValidatorUtil {
         if(!appUtil.isValueLessThanMinimumAmount(amount)) {
             return true;
         }
-        printInvalidMessage(ValidationResult.INVALID_MINIMUM_AMOUNT.value);
+        printInvalidMessage(INVALID_MINIMUM_AMOUNT.value);
         return false;
     }
 
     public boolean isCustomerHasSufficientBalance(Customer customer, int amount) {
         if (customer.getBalance().intValue() < amount) {
-            printInvalidMessage(ValidationResult.INSUFFICIENT_BALANCE.value, amount);
+            printInvalidMessage(INSUFFICIENT_BALANCE.value, amount);
             return false;
         }
         return true;
@@ -133,11 +128,17 @@ public class ValidatorUtil {
         boolean isDestinationAccountContainOnlyNumbers = isDestinationAccountContainOnlyNumbers(destinationAccount);
         if (isDestinationAccountContainOnlyNumbers) {
             CustomerService customerService = new CustomerServiceImpl();
-            Customer customer = customerService.getCustomerByAccountNumber(destinationAccount);
-            boolean isDestinationAccountFound = isDestinationAccountFound(customer);
-            if (isDestinationAccountFound) {
-                return true;
+            Customer customer;
+
+            try {
+                customer = customerService.getCustomerByAccountNumber(destinationAccount);
+            } catch (Exception e) {
+                customer = null;
             }
+
+            boolean isDestinationAccountFound = isDestinationAccountFound(customer);
+            if (isDestinationAccountFound) return true;
+
         }
         return false;
     }
@@ -146,13 +147,13 @@ public class ValidatorUtil {
         if(appUtil.isOnlyNumbers(account)){
             return true;
         }
-        printInvalidMessage(ValidationResult.INVALID_ACCOUNT.value);
+        printInvalidMessage(INVALID_ACCOUNT.value);
         return false;
     }
 
     public boolean isDestinationAccountFound(Customer customer) {
         if (customer == null) {
-            printInvalidMessage(ValidationResult.INVALID_ACCOUNT.value);
+            printInvalidMessage(INVALID_ACCOUNT.value);
             return false;
         }
         return true;
@@ -162,7 +163,7 @@ public class ValidatorUtil {
         if (!referenceNumber.isEmpty() && appUtil.isOnlyNumbers(referenceNumber)) {
             return true;
         }
-        printInvalidMessage(ValidationResult.INVALID_REFERENCE_NUMBER.value);
+        printInvalidMessage(INVALID_REFERENCE_NUMBER.value);
         return false;
     }
 
