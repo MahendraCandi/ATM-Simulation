@@ -23,4 +23,10 @@ public class MessageUtil {
     public String deleteLastDelimiter(String message) {
         return message.replaceAll(";$", "");
     }
+
+    public static void printAllErrorMessage(String responseMessage) {
+        for (String message : responseMessage.split(MessageUtil.MESSAGE_DELIMITER)) {
+            MessageUtil.printInvalidMessage(message);
+        }
+    }
 }
