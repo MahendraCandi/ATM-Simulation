@@ -3,7 +3,6 @@ package com.mahendracandi.mitrais_atm_simulation.screen;
 import java.util.Scanner;
 
 public abstract class Screen {
-    protected boolean existScreen = false;
     protected Scanner scanner = new Scanner(System.in);
 
     public abstract void showScreen();
@@ -19,7 +18,4 @@ public abstract class Screen {
         return (scanInput == null || scanInput.isEmpty()) ? defaultInput : scanInput;
     }
 
-    public boolean isExistScreen() {
-        return existScreen;
-    }
 }
