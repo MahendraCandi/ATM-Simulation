@@ -39,7 +39,7 @@ public class FundTransferScreen extends Screen {
         int randomNumber = appUtil.getRandomNumber();
         MessageUtil.printMessage("Reference Number: (" + randomNumber + ")\n" +
                 "Press enter to continued ");
-        String referenceNumber = doInput();
+        String referenceNumber = doInput(String.valueOf(randomNumber));
 
         FundTransfer fundTransfer = new FundTransfer();
         fundTransfer.setDestinationAccount(destinationAccount);
