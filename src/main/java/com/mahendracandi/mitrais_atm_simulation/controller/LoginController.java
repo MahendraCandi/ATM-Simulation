@@ -43,7 +43,8 @@ public class LoginController {
 
         if (isResultValid) {
             try {
-                customer = customerService.doLogin(accountNumber, pinNumber);
+                customer = customerService.doLogin(accountNumber, pinNumber)
+                        .orElseThrow(IllegalArgumentException::new);
                 message = SUCCESS.value;
             } catch (Exception e) {
                 isResultValid = false;

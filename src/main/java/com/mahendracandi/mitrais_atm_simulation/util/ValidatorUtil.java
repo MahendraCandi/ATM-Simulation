@@ -132,7 +132,8 @@ public class ValidatorUtil {
             Customer customer;
 
             try {
-                customer = customerService.getCustomerByAccountNumber(destinationAccount);
+                customer = customerService.getCustomerByAccountNumber(destinationAccount)
+                        .orElseThrow(() -> new IllegalArgumentException(INVALID_ACCOUNT.value));
             } catch (Exception e) {
                 customer = null;
             }

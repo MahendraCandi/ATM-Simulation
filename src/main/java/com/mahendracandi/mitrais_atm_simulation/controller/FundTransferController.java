@@ -38,7 +38,8 @@ public class FundTransferController {
                 throw new IllegalStateException();
             }
 
-            destinationCustomer = customerService.getCustomerByAccountNumber(destinationAccount);
+            destinationCustomer = customerService.getCustomerByAccountNumber(destinationAccount)
+                    .orElseThrow(IllegalArgumentException::new);
         } catch (Exception e) {
             isResultValid = false;
             message += messageUtil.addDelimiter(INVALID_ACCOUNT.value);

@@ -1,11 +1,11 @@
 package com.mahendracandi.mitrais_atm_simulation.service;
 
 import com.mahendracandi.mitrais_atm_simulation.model.Customer;
-import com.mahendracandi.mitrais_atm_simulation.util.ValidatorUtil.ValidationResult;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CustomerServiceImpl implements CustomerService{
 
@@ -20,28 +20,28 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
-    public Customer getCustomerByAccountNumber(String accountNumber) {
+    public Optional<Customer> getCustomerByAccountNumber(String accountNumber) {
         return customers.stream()
                 .filter(p -> p.getAccountNumber().equals(accountNumber))
-                .findFirst().orElseThrow(() -> new IllegalArgumentException(ValidationResult.LOGIN_INVALID.value));
+                .findAny();
     }
 
     @Override
-    public Customer getCustomerByAccountAndPinNumber(String accountNumber, String pinNumber) {
+    public Optional<Customer> getCustomerByAccountAndPinNumber(String accountNumber, String pinNumber) {
         return customers.stream()
                 .filter(p -> p.getAccountNumber().equals(accountNumber) && p.getPin().equals(pinNumber))
-                .findFirst().orElseThrow(() -> new IllegalArgumentException(ValidationResult.LOGIN_INVALID.value));
+                .findAny();
     }
 
     @Override
-    public Customer updateCustomer(Customer customer) {
+    public Optional<Customer> updateCustomer(Customer customer) {
         customers.removeIf(p -> p.getAccountNumber().equals(customer.getAccountNumber()));
         customers.add(customer);
         return getCustomerByAccountNumber(customer.getAccountNumber());
     }
 
     @Override
-    public Customer doLogin(String accountNumber, String pinNumber) {
+    public Optional<Customer> doLogin(String accountNumber, String pinNumber) {
         return getCustomerByAccountAndPinNumber(accountNumber, pinNumber);
     }
 }
