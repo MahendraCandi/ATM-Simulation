@@ -9,7 +9,6 @@ public class FundTransferScreen extends Screen {
 
     private final AppUtil appUtil = new AppUtil();
     private final Customer customer;
-    private FundTransfer fundTransfer;
 
     public FundTransferScreen(Customer customer) {
         this.customer = customer;

@@ -2,6 +2,7 @@ package com.mahendracandi.mitrais_atm_simulation;
 
 import com.mahendracandi.mitrais_atm_simulation.model.Customer;
 import com.mahendracandi.mitrais_atm_simulation.screen.impl.LoginScreen;
+import com.mahendracandi.mitrais_atm_simulation.screen.impl.TransactionScreen;
 import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
 
 public class App {
@@ -12,7 +13,10 @@ public class App {
             LoginScreen loginScreen = new LoginScreen();
             loginScreen.showScreen();
             Customer customer = loginScreen.getCustomer();
-            System.out.println(customer.toString());
+
+            TransactionScreen transactionScreen = new TransactionScreen(customer);
+            transactionScreen.showScreen();
+            if (transactionScreen.isExistScreen()) exit = true;
 
         } while (!exit);
         MessageUtil.printMessage("Bye");
