@@ -6,12 +6,10 @@ import com.mahendracandi.mitrais_atm_simulation.model.Customer;
 import com.mahendracandi.mitrais_atm_simulation.model.Transaction;
 import com.mahendracandi.mitrais_atm_simulation.screen.Screen;
 import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
-import com.mahendracandi.mitrais_atm_simulation.util.ValidatorUtil;
 
 public class WithdrawScreen extends Screen {
 
     private final Customer customer;
-    private final ValidatorUtil validatorUtil = new ValidatorUtil();
     private final WithdrawController withdrawController = new WithdrawController();
 
     public WithdrawScreen(Customer customer) {
