@@ -8,11 +8,8 @@ import com.mahendracandi.mitrais_atm_simulation.util.AppUtil;
 public class FundTransferScreen extends Screen {
 
     private final AppUtil appUtil = new AppUtil();
+    private final Customer customer;
     private FundTransfer fundTransfer;
-    private Customer customer;
-
-    public FundTransferScreen() {
-    }
 
     public FundTransferScreen(Customer customer) {
         this.customer = customer;
@@ -20,10 +17,6 @@ public class FundTransferScreen extends Screen {
 
     @Override
     public void showScreen() {
-    }
-
-    @Override
-    protected void readInput() {
         DestinationAccountScreen destinationAccountScreen = new DestinationAccountScreen();
         destinationAccountScreen.showScreen();
         String destinationAccount = destinationAccountScreen.doInput();
@@ -49,14 +42,11 @@ public class FundTransferScreen extends Screen {
         fundTransfer.setReferenceNumber(referenceNumber);
 
         FundTransferConfirmationScreen fundTransferConfirmationScreen = new FundTransferConfirmationScreen(fundTransfer, customer);
-        fundTransferConfirmationScreen.readInput();
+        fundTransferConfirmationScreen.showScreen();
     }
 
-    public FundTransfer getFundTransfer() {
-        return fundTransfer;
-    }
+    @Override
+    protected void readInput() {
 
-    private void setFundTransfer(FundTransfer fundTransfer) {
-        this.fundTransfer = fundTransfer;
     }
 }
