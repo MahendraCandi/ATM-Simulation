@@ -1,6 +1,5 @@
 package com.mahendracandi.mitrais_atm_simulation.screen.impl;
 
-import com.mahendracandi.mitrais_atm_simulation.appEnum.TransactionType;
 import com.mahendracandi.mitrais_atm_simulation.controller.TransactionController;
 import com.mahendracandi.mitrais_atm_simulation.model.AppResponse;
 import com.mahendracandi.mitrais_atm_simulation.model.Transaction;
@@ -10,24 +9,17 @@ import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
 public class SummaryScreen extends Screen {
 
     private final Transaction transaction;
-    private final TransactionType transactionType;
     private final TransactionController transactionController = new TransactionController();
-
-    public SummaryScreen(Transaction transaction, TransactionType transactionType) {
-        this.transaction = transaction;
-        this.transactionType = transactionType;
-    }
 
     public SummaryScreen(Transaction transaction) {
         this.transaction = transaction;
-        this.transactionType = transaction.getTransactionType();
     }
 
     @Override
     public void showScreen() {
         boolean exitLoop = false;
         do {
-            MessageUtil.printMessage(transaction.toString());
+            MessageUtil.printMessage(transaction.toSummaryString());
             MessageUtil.printMessage("1. Transaction");
             MessageUtil.printMessage("2. Exit");
             MessageUtil.printMessage("Choose Option[2]");

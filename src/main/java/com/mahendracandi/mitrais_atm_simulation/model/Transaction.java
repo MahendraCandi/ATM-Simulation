@@ -65,11 +65,6 @@ public class Transaction {
 
     @Override
     public String toString() {
-        if (transactionType.equals(TransactionType.WITHDRAW)) {
-            return withdrawTransactionToString();
-        } else if (transactionType.equals(TransactionType.FUND_TRANSFER)) {
-            return fundTransferToString();
-        }
         return "Transaction{" +
                 "transactionType=" + transactionType +
                 ", customer=" + customer +
@@ -80,7 +75,7 @@ public class Transaction {
                 '}';
     }
 
-    public String toString(TransactionType transactionType) {
+    public String toSummaryString() {
         String value;
         if (TransactionType.WITHDRAW.equals(transactionType)) {
             value = withdrawTransactionToString();
