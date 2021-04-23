@@ -8,8 +8,6 @@ import com.mahendracandi.mitrais_atm_simulation.screen.Screen;
 import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
 import com.mahendracandi.mitrais_atm_simulation.util.ValidatorUtil;
 
-import java.math.BigDecimal;
-
 public class WithdrawScreen extends Screen {
 
     private final Customer customer;
@@ -22,7 +20,7 @@ public class WithdrawScreen extends Screen {
 
     @Override
     public void showScreen() {
-        BigDecimal amount = null;
+        String amountStr = null;
         boolean exitLoop = false;
         do{
             MessageUtil.printMessage("1. $10");
@@ -31,31 +29,29 @@ public class WithdrawScreen extends Screen {
             MessageUtil.printMessage("4. Other");
             MessageUtil.printMessage("5. Back");
             MessageUtil.printMessage("Please choose option[5]: ");
-
             String input = doInput("5");
             switch (input) {
                 case "1":
-                    amount = new BigDecimal("10");
+                    amountStr= "10";
                     break;
                 case "2":
-                    amount = new BigDecimal("50");
+                    amountStr= "50";
                     break;
                 case "3":
-                    amount = new BigDecimal("100");
+                    amountStr= "100";
                     break;
                 case "4":
-                    OtherWithdrawScreen otherWithdrawScreen = new OtherWithdrawScreen();
-                    otherWithdrawScreen.showScreen();
-                    if (otherWithdrawScreen.isInputValid()) amount = otherWithdrawScreen.getAmount();
-                    exitLoop = true;
+                    MessageUtil.printMessage("Other Withdraw");
+                    MessageUtil.printMessage("Enter amount to withdraw: ");
+                    amountStr = doInput();
                     break;
                 case "5":
                     exitLoop = true;
                     break;
             }
 
-            if (amount != null) {
-                AppResponse<Transaction> appResponse = withdrawController.readWithdrawAmount(customer, amount);
+            if (amountStr != null) {
+                AppResponse<Transaction> appResponse = withdrawController.readWithdrawAmount(customer, amountStr);
                 if (appResponse.getStatus()) {
                     SummaryScreen summaryScreen = new SummaryScreen(appResponse.getData());
                     summaryScreen.showScreen();
@@ -65,9 +61,5 @@ public class WithdrawScreen extends Screen {
                 exitLoop = true;
             }
         }while (!exitLoop);
-    }
-
-    private boolean validateAmount(BigDecimal amount) {
-        return validatorUtil.isCustomerHasSufficientBalance(customer, amount.intValue());
     }
 }
