@@ -2,7 +2,7 @@ package com.mahendracandi.mitrais_atm_simulation.util;
 
 public class AppUtil {
 
-    public boolean isLengthValid (String value) {
+    public boolean isLengthSixDigits(String value) {
         return value.length() == 6;
     }
 
