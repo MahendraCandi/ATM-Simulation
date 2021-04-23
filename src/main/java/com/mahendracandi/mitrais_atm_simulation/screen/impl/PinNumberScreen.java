@@ -12,13 +12,4 @@ public class PinNumberScreen extends Screen {
         MessageUtil.printMessage("Enter PIN: ");
     }
 
-    @Override
-    protected void readInput() {
-        String pinNumber = doInput();
-        boolean isPinNumberValid = validatorUtil.isPinNumberValid(pinNumber);
-        if (isPinNumberValid) {
-            this.input = pinNumber;
-        }
-    }
-
 }

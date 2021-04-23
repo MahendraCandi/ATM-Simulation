@@ -28,11 +28,6 @@ public class OtherWithdrawScreen extends Screen {
         }
     }
 
-    @Override
-    protected void readInput() {
-
-    }
-
     public BigDecimal getAmount() {
         return this.amount;
     }

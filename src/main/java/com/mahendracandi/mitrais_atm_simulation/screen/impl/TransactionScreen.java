@@ -38,9 +38,4 @@ public class TransactionScreen extends Screen {
         } while (!exitLoop) ;
     }
 
-    @Override
-    public void readInput() {
-
-    }
-
 }

@@ -46,8 +46,4 @@ public class FundTransferConfirmationScreen extends Screen {
         } while (!exitLoop);
     }
 
-    @Override
-    protected void readInput() {
-
-    }
 }

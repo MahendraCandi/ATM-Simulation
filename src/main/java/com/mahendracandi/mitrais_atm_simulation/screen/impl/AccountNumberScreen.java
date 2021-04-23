@@ -13,14 +13,4 @@ public class AccountNumberScreen extends Screen {
         MessageUtil.printMessage("Enter account number: ");
     }
 
-    @Override
-    protected void readInput() {
-        String accountNumber = doInput();
-
-        boolean isAccountNumberValid = validatorUtil.isAccountNumberValid(accountNumber);
-        if (isAccountNumberValid) {
-            this.input = accountNumber;
-        }
-    }
-
 }

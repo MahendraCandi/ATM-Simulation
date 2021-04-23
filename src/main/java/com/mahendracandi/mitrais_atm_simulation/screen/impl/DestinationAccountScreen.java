@@ -10,8 +10,4 @@ public class DestinationAccountScreen extends Screen {
         MessageUtil.printMessage("press enter to go back to Transaction: ");
     }
 
-    @Override
-    protected void readInput() {
-
-    }
 }

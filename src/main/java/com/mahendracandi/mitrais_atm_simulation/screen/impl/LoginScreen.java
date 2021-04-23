@@ -30,11 +30,6 @@ public class LoginScreen extends Screen {
         } while (!exit);
     }
 
-    @Override
-    public void readInput() {
-
-    }
-
     public Customer getCustomer() {
         return customer;
     }

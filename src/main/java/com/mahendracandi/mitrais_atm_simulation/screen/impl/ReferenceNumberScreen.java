@@ -18,8 +18,4 @@ public class ReferenceNumberScreen extends Screen {
         setDefaultInput(referenceNumber);
     }
 
-    @Override
-    protected void readInput() {
-
-    }
 }

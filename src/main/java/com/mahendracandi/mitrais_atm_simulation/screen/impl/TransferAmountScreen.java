@@ -11,8 +11,4 @@ public class TransferAmountScreen extends Screen {
                 "Press enter to go back to Transaction: ");
     }
 
-    @Override
-    protected void readInput() {
-
-    }
 }

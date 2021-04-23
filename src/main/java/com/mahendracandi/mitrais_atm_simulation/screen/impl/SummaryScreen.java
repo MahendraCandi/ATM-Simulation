@@ -39,8 +39,4 @@ public class SummaryScreen extends Screen {
         } while (!exitLoop);
     }
 
-    @Override
-    protected void readInput() {
-
-    }
 }

@@ -67,11 +67,6 @@ public class WithdrawScreen extends Screen {
         }while (!exitLoop);
     }
 
-    @Override
-    public void readInput() {
-
-    }
-
     private boolean validateAmount(BigDecimal amount) {
         return validatorUtil.isCustomerHasSufficientBalance(customer, amount.intValue());
     }
