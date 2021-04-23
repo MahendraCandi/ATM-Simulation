@@ -3,15 +3,15 @@ package com.mahendracandi.mitrais_atm_simulation.screen;
 import java.util.Scanner;
 
 public abstract class Screen {
-    protected Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
 
     public abstract void showScreen();
 
-    public String doInput() {
+    protected String doInput() {
         return this.scanner.nextLine();
     }
 
-    public String doInput(String defaultInput) {
+    protected String doInput(String defaultInput) {
         if (defaultInput == null || defaultInput.isEmpty()) throw new IllegalArgumentException();
 
         String scanInput = doInput();
