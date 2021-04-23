@@ -15,7 +15,6 @@ public class ReferenceNumberScreen extends Screen {
     public void showScreen() {
         MessageUtil.printMessage("Reference Number: (" + referenceNumber + ") ");
         MessageUtil.printMessage("Press enter to continued ");
-        setDefaultInput(referenceNumber);
     }
 
 }
