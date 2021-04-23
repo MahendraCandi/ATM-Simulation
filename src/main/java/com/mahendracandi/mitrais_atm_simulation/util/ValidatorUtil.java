@@ -33,7 +33,7 @@ public class ValidatorUtil {
     }
 
     public boolean isAccountNumberValid(String accountNumber) {
-        if (!appUtil.isLengthValid(accountNumber)) {
+        if (!appUtil.isLengthSixDigits(accountNumber)) {
             throw new IllegalStateException(ACCOUNT_NUMBER_LENGTH_NOT_VALID.value);
         }
         if (!appUtil.isOnlyNumbers(accountNumber)) {
@@ -43,7 +43,7 @@ public class ValidatorUtil {
     }
 
     public boolean isPinNumberValid(String pinNumber) {
-        if (!appUtil.isLengthValid(pinNumber)) {
+        if (!appUtil.isLengthSixDigits(pinNumber)) {
             throw new IllegalStateException(PIN_LENGTH_NOT_VALID.value);
         }
         if (!appUtil.isOnlyNumbers(pinNumber)) {

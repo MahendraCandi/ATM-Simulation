@@ -21,7 +21,7 @@ public class LoginController {
         boolean isResultValid = true;
         String message = "";
 
-        if (!appUtil.isLengthValid(accountNumber)) {
+        if (!appUtil.isLengthSixDigits(accountNumber)) {
             isResultValid = false;
             message += messageUtil.addDelimiter(ACCOUNT_NUMBER_LENGTH_NOT_VALID.value);
         }
@@ -31,7 +31,7 @@ public class LoginController {
             message += messageUtil.addDelimiter(ACCOUNT_NUMBER_NOT_NUMBERS.value);
         }
 
-        if (!appUtil.isLengthValid(pinNumber)) {
+        if (!appUtil.isLengthSixDigits(pinNumber)) {
             isResultValid = false;
             message += messageUtil.addDelimiter(PIN_LENGTH_NOT_VALID.value);
         }
