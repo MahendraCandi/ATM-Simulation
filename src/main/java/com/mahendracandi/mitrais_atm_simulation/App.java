@@ -16,7 +16,7 @@ public class App {
 
             TransactionScreen transactionScreen = new TransactionScreen(customer);
             transactionScreen.showScreen();
-            if (transactionScreen.isExistScreen()) exit = true;
+            if (transactionScreen.isExitTransactionScreen()) exit = true;
 
         } while (!exit);
         MessageUtil.printMessage("Bye");
