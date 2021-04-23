@@ -18,6 +18,13 @@ public abstract class Screen {
         return scanInput;
     }
 
+    public String doInput(String defaultInput) {
+        if (defaultInput == null || defaultInput.isEmpty()) throw new IllegalArgumentException();
+
+        String scanInput = doInput();
+        return (scanInput == null || scanInput.isEmpty()) ? defaultInput : scanInput;
+    }
+
     protected void setDefaultInput(String defaultInput) {
         this.defaultInput = defaultInput;
     }
