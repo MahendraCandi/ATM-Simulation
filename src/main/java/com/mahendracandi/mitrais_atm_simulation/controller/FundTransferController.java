@@ -47,20 +47,19 @@ public class FundTransferController {
         try {
             amount = new BigDecimal(transferAmount);
             if (!appUtil.isValueMultipleOfTen(amount.intValue())) throw new NumberFormatException();
+
             if (appUtil.isValueMoreThanMaximumAmount(amount.intValue())) {
                 isResultValid = false;
                 message += messageUtil.addDelimiter(INVALID_MAXIMUM_AMOUNT.value);
-            }
-            if (appUtil.isValueLessThanMinimumAmount(amount.intValue())) {
+            } else if (appUtil.isValueLessThanMinimumAmount(amount.intValue())) {
                 isResultValid = false;
                 message += messageUtil.addDelimiter(INVALID_MINIMUM_AMOUNT.value);
+            } else {
+                if (customer.getBalance().compareTo(amount) < 0) {
+                    isResultValid = false;
+                    message += messageUtil.addDelimiter(INSUFFICIENT_BALANCE.value + " $" + amount);
+                }
             }
-
-            if (customer.getBalance().compareTo(amount) < 0) {
-                isResultValid = false;
-                message += messageUtil.addDelimiter(INSUFFICIENT_BALANCE.value + " $" + amount);
-            }
-
         } catch (NumberFormatException e) {
             isResultValid = false;
             message += messageUtil.addDelimiter(INVALID_AMOUNT.value);
