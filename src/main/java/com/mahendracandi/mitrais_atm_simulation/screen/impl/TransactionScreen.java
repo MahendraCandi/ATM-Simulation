@@ -26,11 +26,10 @@ public class TransactionScreen extends Screen {
                 case "1":
                     WithdrawScreen withdrawScreen = new WithdrawScreen(customer);
                     withdrawScreen.showScreen();
-                    if (withdrawScreen.isExistScreen()) continue;
                     break;
                 case "2":
                     FundTransferScreen fundTransferScreen = new FundTransferScreen(customer);
-                    fundTransferScreen.readInput();
+                    fundTransferScreen.showScreen();
                     break;
                 case "3":
                     this.existScreen = true;
