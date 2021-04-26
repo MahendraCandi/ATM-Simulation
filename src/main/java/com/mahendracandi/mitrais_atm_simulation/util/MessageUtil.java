@@ -1,5 +1,8 @@
 package com.mahendracandi.mitrais_atm_simulation.util;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class MessageUtil {
 
     public final static String MESSAGE_DELIMITER = ";";
@@ -22,6 +25,10 @@ public class MessageUtil {
 
     public String deleteLastDelimiter(String message) {
         return message.replaceAll(";$", "");
+    }
+
+    public String joinMessages(List<String> messages) {
+        return messages.stream().map(this::addDelimiter).collect(Collectors.joining());
     }
 
     public static void printAllErrorMessage(String responseMessage) {
