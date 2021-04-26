@@ -1,6 +1,6 @@
 package com.mahendracandi.mitrais_atm_simulation.model;
 
-import com.mahendracandi.mitrais_atm_simulation.appEnum.TransactionType;
+import com.mahendracandi.mitrais_atm_simulation.appenum.TransactionType;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

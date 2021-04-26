@@ -1,6 +1,6 @@
 package com.mahendracandi.mitrais_atm_simulation.controller;
 
-import com.mahendracandi.mitrais_atm_simulation.appEnum.TransactionType;
+import com.mahendracandi.mitrais_atm_simulation.appenum.TransactionType;
 import com.mahendracandi.mitrais_atm_simulation.model.AppResponse;
 import com.mahendracandi.mitrais_atm_simulation.model.Customer;
 import com.mahendracandi.mitrais_atm_simulation.model.FundTransfer;

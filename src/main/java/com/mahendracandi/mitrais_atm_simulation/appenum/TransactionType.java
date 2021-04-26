@@ -1,4 +1,4 @@
-package com.mahendracandi.mitrais_atm_simulation.appEnum;
+package com.mahendracandi.mitrais_atm_simulation.appenum;
 
 public enum TransactionType {
     WITHDRAW,
