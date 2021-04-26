@@ -23,14 +23,14 @@ public class CustomerServiceImpl implements CustomerService{
     public Optional<Customer> getCustomerByAccountNumber(String accountNumber) {
         return customers.stream()
                 .filter(p -> p.getAccountNumber().equals(accountNumber))
-                .findAny();
+                .findFirst();
     }
 
     @Override
     public Optional<Customer> getCustomerByAccountAndPinNumber(String accountNumber, String pinNumber) {
         return customers.stream()
                 .filter(p -> p.getAccountNumber().equals(accountNumber) && p.getPin().equals(pinNumber))
-                .findAny();
+                .findFirst();
     }
 
     @Override
