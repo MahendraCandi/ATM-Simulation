@@ -6,7 +6,7 @@ import com.mahendracandi.mitrais_atm_simulation.model.Customer;
 import com.mahendracandi.mitrais_atm_simulation.model.Transaction;
 import com.mahendracandi.mitrais_atm_simulation.model.ValidationMessage;
 import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
-import com.mahendracandi.mitrais_atm_simulation.validation.transaction.AmountValidator;
+import com.mahendracandi.mitrais_atm_simulation.validation.transaction.AmountValidatorImpl;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -28,7 +28,7 @@ public class WithdrawController {
         try {
             amount = new BigDecimal(amountStr);
 
-            ValidationMessage checkBalance = new AmountValidator().validateBalance(customer, amount);
+            ValidationMessage checkBalance = new AmountValidatorImpl().validateBalance(customer, amount);
             if (checkBalance.isNotSuccess()) {
                 message = messageUtil.joinMessages(checkBalance.getErrorMessages());
             } else {

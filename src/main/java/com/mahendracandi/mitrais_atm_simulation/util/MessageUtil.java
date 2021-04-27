@@ -36,4 +36,12 @@ public class MessageUtil {
             MessageUtil.printInvalidMessage(message);
         }
     }
+
+    public static void printAllErrorMessage(List<String> responseMessages) {
+        printAllErrorMessage(new MessageUtil().joinMessages(responseMessages));
+    }
+
+    public static String extractMessage(List<String> messages) {
+        return String.join("\n", messages).replaceAll("\n$", "");
+    }
 }

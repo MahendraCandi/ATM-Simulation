@@ -6,7 +6,7 @@ import com.mahendracandi.mitrais_atm_simulation.model.ValidationMessage;
 import com.mahendracandi.mitrais_atm_simulation.service.CustomerService;
 import com.mahendracandi.mitrais_atm_simulation.service.CustomerServiceImpl;
 import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
-import com.mahendracandi.mitrais_atm_simulation.validation.customer.AccountNumberValidator;
+import com.mahendracandi.mitrais_atm_simulation.validation.customer.AccountNumberValidatorImpl;
 import com.mahendracandi.mitrais_atm_simulation.validation.customer.PinValidator;
 
 import static com.mahendracandi.mitrais_atm_simulation.util.ValidatorUtil.ValidationResult.INVALID_ACCOUNT;
@@ -23,7 +23,7 @@ public class LoginController {
         String message = "";
         boolean isResultValid = false;
 
-        ValidationMessage accountNumberValidationMessage = new AccountNumberValidator().validate(accountNumber);
+        ValidationMessage accountNumberValidationMessage = new AccountNumberValidatorImpl().validateNumber(accountNumber);
         ValidationMessage pinValidationMessage = new PinValidator().validate(pinNumber);
 
         if (!accountNumberValidationMessage.isNotSuccess() && !pinValidationMessage.isNotSuccess()) {

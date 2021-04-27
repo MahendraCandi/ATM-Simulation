@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class CustomerServiceImpl implements CustomerService{
 
-    private List<Customer> customers = new ArrayList<Customer>() {{
+    private static List<Customer> customers = new ArrayList<Customer>() {{
         add(new Customer("John Doe", "012108", "112233", new BigDecimal("100")));
         add(new Customer("Jane Doe", "932012", "112244", new BigDecimal("40")));
     }};

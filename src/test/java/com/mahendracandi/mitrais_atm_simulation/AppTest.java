@@ -10,6 +10,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -78,5 +79,13 @@ public class AppTest
         message = messageUtil.deleteLastDelimiter(message);
 
         Assert.assertEquals("hello;world", message);
+    }
+
+    public void testExtractMessage() {
+        List<String> strings = new ArrayList<>();
+        strings.add("hello");
+        strings.add("world");
+
+        Assert.assertEquals("hello\nworld", MessageUtil.extractMessage(strings));
     }
 }
