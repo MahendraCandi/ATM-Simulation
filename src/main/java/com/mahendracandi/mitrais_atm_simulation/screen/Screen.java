@@ -5,7 +5,7 @@ import java.util.Scanner;
 public abstract class Screen {
     private final Scanner scanner = new Scanner(System.in);
 
-    public abstract void showScreen();
+    public abstract void showScreen() throws Exception;
 
     protected String doInput() {
         return this.scanner.nextLine();

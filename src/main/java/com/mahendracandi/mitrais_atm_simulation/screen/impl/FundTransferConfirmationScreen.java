@@ -1,12 +1,12 @@
 package com.mahendracandi.mitrais_atm_simulation.screen.impl;
 
 import com.mahendracandi.mitrais_atm_simulation.appenum.TransactionType;
+import com.mahendracandi.mitrais_atm_simulation.appexeption.InvalidAmountException;
 import com.mahendracandi.mitrais_atm_simulation.model.Customer;
 import com.mahendracandi.mitrais_atm_simulation.model.Transaction;
-import com.mahendracandi.mitrais_atm_simulation.model.ValidationMessage;
 import com.mahendracandi.mitrais_atm_simulation.screen.Screen;
 import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
-import com.mahendracandi.mitrais_atm_simulation.validation.transaction.AmountValidatorImpl;
+import com.mahendracandi.mitrais_atm_simulation.validation.impl.CustomerBalanceValidator;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -25,7 +25,7 @@ public class FundTransferConfirmationScreen extends Screen {
     }
 
     @Override
-    public void showScreen() {
+    public void showScreen() throws InvalidAmountException {
         boolean exitLoop = false;
         do {
             MessageUtil.printMessage("Transfer Confirmation" +
@@ -38,11 +38,8 @@ public class FundTransferConfirmationScreen extends Screen {
             String option = doInput("2");
             switch (option) {
                 case "1":
-                    ValidationMessage checkBalance = new AmountValidatorImpl().validateBalance(customer, transferAmount);
-                    if (checkBalance.isNotSuccess()) {
-                        MessageUtil.printAllErrorMessage(checkBalance.getErrorMessages());
-                        return;
-                    }
+                    CustomerBalanceValidator validator = new CustomerBalanceValidator(customer);
+                    validator.validate(transferAmount);
 
                     Transaction transaction = new Transaction();
                     transaction.setTransactionType(TransactionType.FUND_TRANSFER);

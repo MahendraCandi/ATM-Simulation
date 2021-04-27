@@ -8,7 +8,6 @@ import static com.mahendracandi.mitrais_atm_simulation.util.MessageUtil.printMes
 public class TransactionScreen extends Screen {
 
     private final Customer customer;
-    private boolean isExitTransactionScreen;
 
     public TransactionScreen(Customer customer) {
         this.customer = customer;
@@ -33,13 +32,8 @@ public class TransactionScreen extends Screen {
                     fundTransferScreen.showScreen();
                     break;
                 case "3":
-                    isExitTransactionScreen = true;
                     exitLoop = true;
             }
         } while (!exitLoop) ;
-    }
-
-    public boolean isExitTransactionScreen() {
-        return isExitTransactionScreen;
     }
 }
