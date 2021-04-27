@@ -4,7 +4,7 @@ import com.mahendracandi.mitrais_atm_simulation.model.Customer;
 import com.mahendracandi.mitrais_atm_simulation.model.ValidationMessage;
 import com.mahendracandi.mitrais_atm_simulation.util.AppUtil;
 import com.mahendracandi.mitrais_atm_simulation.validation.CustomerBalanceValidator;
-import com.mahendracandi.mitrais_atm_simulation.validation.TransactionValidator;
+import com.mahendracandi.mitrais_atm_simulation.validation.AmountValidator;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.List;
 
 import static com.mahendracandi.mitrais_atm_simulation.util.ValidatorUtil.ValidationResult.*;
 
-public class AmountValidator implements TransactionValidator, CustomerBalanceValidator {
+public class AmountValidatorImpl implements AmountValidator, CustomerBalanceValidator {
     private final AppUtil appUtil = new AppUtil();
 
     @Override
@@ -38,6 +38,25 @@ public class AmountValidator implements TransactionValidator, CustomerBalanceVal
     }
 
     @Override
+    public ValidationMessage validate(String amountStr) {
+        ValidationMessage validationMessage = new ValidationMessage();
+        List<String> errorMessages = new ArrayList<>();
+        BigDecimal amount;
+        try {
+            amount = new BigDecimal(amountStr);
+            ValidationMessage checkAmount = this.validate(amount);
+            if (checkAmount.isNotSuccess()) {
+                return checkAmount;
+            }
+        } catch (NumberFormatException e) {
+            validationMessage.setNotSuccess(true);
+            errorMessages.add(INVALID_AMOUNT.value);
+        }
+        validationMessage.setErrorMessages(errorMessages);
+        return validationMessage;
+    }
+
+    @Override
     public ValidationMessage validateBalance(Customer customer, BigDecimal amount) {
         ValidationMessage checkBalance = new ValidationMessage();
         List<String> errorMessages = new ArrayList<>();
@@ -54,5 +73,24 @@ public class AmountValidator implements TransactionValidator, CustomerBalanceVal
 
         checkBalance.setErrorMessages(errorMessages);
         return checkBalance;
+    }
+
+    @Override
+    public ValidationMessage validateBalance(Customer customer, String amountStr) {
+        ValidationMessage validationMessage = new ValidationMessage();
+        List<String> errorMessages = new ArrayList<>();
+        BigDecimal amount;
+        try {
+            amount = new BigDecimal(amountStr);
+            ValidationMessage checkAmount = this.validateBalance(customer, amount);
+            if (checkAmount.isNotSuccess()) {
+                return checkAmount;
+            }
+        } catch (NumberFormatException e) {
+            validationMessage.setNotSuccess(true);
+            errorMessages.add(INVALID_AMOUNT.value);
+        }
+        validationMessage.setErrorMessages(errorMessages);
+        return validationMessage;
     }
 }

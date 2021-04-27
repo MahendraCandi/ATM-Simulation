@@ -1,15 +1,15 @@
 package com.mahendracandi.mitrais_atm_simulation.screen.impl;
 
-import com.mahendracandi.mitrais_atm_simulation.controller.TransactionController;
-import com.mahendracandi.mitrais_atm_simulation.model.AppResponse;
 import com.mahendracandi.mitrais_atm_simulation.model.Transaction;
 import com.mahendracandi.mitrais_atm_simulation.screen.Screen;
+import com.mahendracandi.mitrais_atm_simulation.service.TransactionService;
+import com.mahendracandi.mitrais_atm_simulation.service.TransactionServiceImpl;
 import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
 
 public class SummaryScreen extends Screen {
 
     private final Transaction transaction;
-    private final TransactionController transactionController = new TransactionController();
+    private final TransactionService transactionService = new TransactionServiceImpl();
 
     public SummaryScreen(Transaction transaction) {
         this.transaction = transaction;
@@ -26,10 +26,7 @@ public class SummaryScreen extends Screen {
             String option = doInput("2");
             switch (option) {
                 case "1":
-                    AppResponse<Transaction> appResponse = transactionController.doTransaction(transaction);
-                    if (!appResponse.getStatus()) {
-                        MessageUtil.printAllErrorMessage(appResponse.getMessage());
-                    }
+                    transactionService.doTransaction(transaction);
                     exitLoop = true;
                     break;
                 case "2":

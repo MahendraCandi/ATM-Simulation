@@ -1,16 +1,19 @@
 package com.mahendracandi.mitrais_atm_simulation.screen.impl;
 
-import com.mahendracandi.mitrais_atm_simulation.controller.WithdrawController;
-import com.mahendracandi.mitrais_atm_simulation.model.AppResponse;
+import com.mahendracandi.mitrais_atm_simulation.appenum.TransactionType;
 import com.mahendracandi.mitrais_atm_simulation.model.Customer;
 import com.mahendracandi.mitrais_atm_simulation.model.Transaction;
+import com.mahendracandi.mitrais_atm_simulation.model.ValidationMessage;
 import com.mahendracandi.mitrais_atm_simulation.screen.Screen;
 import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
+import com.mahendracandi.mitrais_atm_simulation.validation.transaction.AmountValidatorImpl;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class WithdrawScreen extends Screen {
 
     private final Customer customer;
-    private final WithdrawController withdrawController = new WithdrawController();
 
     public WithdrawScreen(Customer customer) {
         this.customer = customer;
@@ -49,13 +52,21 @@ public class WithdrawScreen extends Screen {
             }
 
             if (amountStr != null) {
-                AppResponse<Transaction> appResponse = withdrawController.readWithdrawAmount(customer, amountStr);
-                if (appResponse.getStatus()) {
-                    SummaryScreen summaryScreen = new SummaryScreen(appResponse.getData());
-                    summaryScreen.showScreen();
-                } else {
-                    MessageUtil.printAllErrorMessage(appResponse.getMessage());
+                ValidationMessage vMessage = new AmountValidatorImpl().validateBalance(customer, amountStr);
+                if (vMessage.isNotSuccess()) {
+                    MessageUtil.printAllErrorMessage(vMessage.getErrorMessages());
+                    return;
                 }
+                BigDecimal amount = new BigDecimal(amountStr);
+                Transaction transaction = new Transaction();
+                transaction.setTransactionType(TransactionType.WITHDRAW);
+                transaction.setCustomer(customer);
+                transaction.setAmount(amount);
+                transaction.setDate(LocalDateTime.now());
+
+                SummaryScreen summaryScreen = new SummaryScreen(transaction);
+                summaryScreen.showScreen();
+
                 exitLoop = true;
             }
         }while (!exitLoop);

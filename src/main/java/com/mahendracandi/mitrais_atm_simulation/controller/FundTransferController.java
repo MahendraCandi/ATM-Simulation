@@ -40,12 +40,7 @@ public class FundTransferController {
 
             destinationCustomer = customerService.getCustomerByAccountNumber(destinationAccount)
                     .orElseThrow(IllegalArgumentException::new);
-        } catch (Exception e) {
-            isResultValid = false;
-            message += messageUtil.addDelimiter(INVALID_ACCOUNT.value);
-        }
 
-        try {
             amount = new BigDecimal(transferAmount);
             if (!appUtil.isValueMultipleOfTen(amount.intValue())) throw new NumberFormatException();
 
@@ -64,6 +59,9 @@ public class FundTransferController {
         } catch (NumberFormatException e) {
             isResultValid = false;
             message += messageUtil.addDelimiter(INVALID_AMOUNT.value);
+        } catch (Exception e) {
+            isResultValid = false;
+            message += messageUtil.addDelimiter(INVALID_ACCOUNT.value);
         }
 
         if (!appUtil.isOnlyNumbers(referenceNumber) || !appUtil.isLengthSixDigits(referenceNumber)) {

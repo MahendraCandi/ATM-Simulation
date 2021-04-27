@@ -7,4 +7,6 @@ import java.math.BigDecimal;
 
 public interface CustomerBalanceValidator {
     ValidationMessage validateBalance(Customer customer, BigDecimal amount);
+
+    ValidationMessage validateBalance(Customer customer, String amountStr);
 }

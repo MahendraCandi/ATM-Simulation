@@ -19,18 +19,28 @@ public class TransactionServiceImpl implements TransactionService{
         transaction.setAmount(amount);
         transaction.setDate(dateTime);
 
-        BigDecimal deductedBalance = deductedBalance(customer.getBalance(), amount);
-        customer.setBalance(deductedBalance);
-
-        customerService.updateCustomer(customer);
+        this.doTransaction(transaction);
     }
 
     @Override
     public void doTransaction(Transaction transaction) {
-        doTransaction(transaction.getTransactionType(), transaction.getCustomer(), transaction.getAmount(), transaction.getDate());
+        Customer customer = transaction.getCustomer();
+        BigDecimal deductedBalance = deductedBalance(customer.getBalance(), transaction.getAmount());
+        customer.setBalance(deductedBalance);
+        customerService.updateCustomer(customer);
+
+        if (transaction.getTransactionType().equals(TransactionType.FUND_TRANSFER)) {
+            Customer destinationAccount = transaction.getDestinationAccount();
+            destinationAccount.setBalance(addBalance(destinationAccount.getBalance(), transaction.getAmount()));
+            customerService.updateCustomer(destinationAccount);
+        }
     }
 
     private BigDecimal deductedBalance(BigDecimal balance, BigDecimal amount) {
         return balance.subtract(amount);
+    }
+
+    private BigDecimal addBalance(BigDecimal balance, BigDecimal amount) {
+        return balance.add(amount);
     }
 }
