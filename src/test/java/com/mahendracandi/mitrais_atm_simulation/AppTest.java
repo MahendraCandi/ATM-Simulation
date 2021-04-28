@@ -4,7 +4,7 @@ import com.mahendracandi.mitrais_atm_simulation.model.Customer;
 import com.mahendracandi.mitrais_atm_simulation.service.CustomerService;
 import com.mahendracandi.mitrais_atm_simulation.service.CustomerServiceImpl;
 import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
-import com.mahendracandi.mitrais_atm_simulation.util.ValidatorUtil;
+import com.mahendracandi.mitrais_atm_simulation.appenum.ValidationResult;
 import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -54,13 +54,13 @@ public class AppTest
 
     public void testGetCustomerByAccountNumber() {
         Customer customer = customerService.getCustomerByAccountNumber("112233")
-                .orElseThrow(() -> new IllegalArgumentException(ValidatorUtil.ValidationResult.INVALID_ACCOUNT.value));
+                .orElseThrow(() -> new IllegalArgumentException(ValidationResult.INVALID_ACCOUNT.value));
         Assert.assertEquals("John Doe", customer.getName());
     }
 
     public void testUpdateCustomer() {
         Customer customer = customerService.getCustomerByAccountNumber("112244")
-                .orElseThrow(() -> new IllegalArgumentException(ValidatorUtil.ValidationResult.INVALID_ACCOUNT.value));
+                .orElseThrow(() -> new IllegalArgumentException(ValidationResult.INVALID_ACCOUNT.value));
         customer.setName("Tamara");
         customerService.updateCustomer(customer);
 

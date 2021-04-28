@@ -3,7 +3,7 @@ package com.mahendracandi.mitrais_atm_simulation.screen.impl;
 import com.mahendracandi.mitrais_atm_simulation.appexeption.InvalidAmountException;
 import com.mahendracandi.mitrais_atm_simulation.screen.Screen;
 import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
-import com.mahendracandi.mitrais_atm_simulation.util.ValidatorUtil;
+import com.mahendracandi.mitrais_atm_simulation.appenum.ValidationResult;
 import com.mahendracandi.mitrais_atm_simulation.validation.impl.AmountValidator;
 
 import java.math.BigDecimal;
@@ -23,7 +23,7 @@ public class TransferAmountScreen extends Screen {
         try {
             amount = new BigDecimal(transferAmount);
         } catch (NumberFormatException e) {
-            throw new NumberFormatException(ValidatorUtil.ValidationResult.INVALID_AMOUNT.value);
+            throw new NumberFormatException(ValidationResult.INVALID_AMOUNT.value);
         }
         AmountValidator amountValidator = new AmountValidator();
         amountValidator.validate(amount);

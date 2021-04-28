@@ -4,8 +4,8 @@ import com.mahendracandi.mitrais_atm_simulation.appexeption.InvalidAccountExcept
 import com.mahendracandi.mitrais_atm_simulation.util.AppUtil;
 import com.mahendracandi.mitrais_atm_simulation.validation.AppValidator;
 
-import static com.mahendracandi.mitrais_atm_simulation.util.ValidatorUtil.ValidationResult.ACCOUNT_NUMBER_LENGTH_NOT_VALID;
-import static com.mahendracandi.mitrais_atm_simulation.util.ValidatorUtil.ValidationResult.ACCOUNT_NUMBER_NOT_NUMBERS;
+import static com.mahendracandi.mitrais_atm_simulation.appenum.ValidationResult.ACCOUNT_NUMBER_LENGTH_NOT_VALID;
+import static com.mahendracandi.mitrais_atm_simulation.appenum.ValidationResult.ACCOUNT_NUMBER_NOT_NUMBERS;
 
 public class AccountNumberValidator implements AppValidator<String> {
 

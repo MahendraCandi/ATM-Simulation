@@ -6,7 +6,7 @@ import com.mahendracandi.mitrais_atm_simulation.validation.AppValidator;
 
 import java.math.BigDecimal;
 
-import static com.mahendracandi.mitrais_atm_simulation.util.ValidatorUtil.ValidationResult.INSUFFICIENT_BALANCE;
+import static com.mahendracandi.mitrais_atm_simulation.appenum.ValidationResult.INSUFFICIENT_BALANCE;
 
 public class CustomerBalanceValidator implements AppValidator<BigDecimal> {
 

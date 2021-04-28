@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mahendracandi.mitrais_atm_simulation.util.ValidatorUtil.ValidationResult.INVALID_AMOUNT;
+import static com.mahendracandi.mitrais_atm_simulation.appenum.ValidationResult.INVALID_AMOUNT;
 
 public class WithdrawScreen extends Screen {
 

@@ -10,7 +10,7 @@ import com.mahendracandi.mitrais_atm_simulation.validation.impl.DestinationAccou
 
 import java.util.Optional;
 
-import static com.mahendracandi.mitrais_atm_simulation.util.ValidatorUtil.ValidationResult.INVALID_ACCOUNT;
+import static com.mahendracandi.mitrais_atm_simulation.appenum.ValidationResult.INVALID_ACCOUNT;
 
 public class DestinationAccountScreen extends Screen {
     private Customer destinationCustomer;

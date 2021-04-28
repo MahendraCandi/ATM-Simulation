@@ -6,7 +6,7 @@ import com.mahendracandi.mitrais_atm_simulation.validation.AppValidator;
 
 import java.math.BigDecimal;
 
-import static com.mahendracandi.mitrais_atm_simulation.util.ValidatorUtil.ValidationResult.*;
+import static com.mahendracandi.mitrais_atm_simulation.appenum.ValidationResult.*;
 
 public class AmountValidator implements AppValidator<BigDecimal> {
     private final AppUtil appUtil = new AppUtil();

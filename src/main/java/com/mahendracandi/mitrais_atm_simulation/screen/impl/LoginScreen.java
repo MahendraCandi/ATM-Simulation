@@ -7,13 +7,12 @@ import com.mahendracandi.mitrais_atm_simulation.screen.Screen;
 import com.mahendracandi.mitrais_atm_simulation.service.CustomerService;
 import com.mahendracandi.mitrais_atm_simulation.service.CustomerServiceImpl;
 import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
-import com.mahendracandi.mitrais_atm_simulation.util.ValidatorUtil;
 import com.mahendracandi.mitrais_atm_simulation.validation.impl.AccountNumberValidator;
 import com.mahendracandi.mitrais_atm_simulation.validation.impl.PinValidator;
 
 import java.util.Optional;
 
-import static com.mahendracandi.mitrais_atm_simulation.util.ValidatorUtil.ValidationResult.*;
+import static com.mahendracandi.mitrais_atm_simulation.appenum.ValidationResult.*;
 
 public class LoginScreen extends Screen {
 
