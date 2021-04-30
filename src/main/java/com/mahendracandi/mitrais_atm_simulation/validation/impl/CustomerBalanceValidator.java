@@ -1,6 +1,6 @@
 package com.mahendracandi.mitrais_atm_simulation.validation.impl;
 
-import com.mahendracandi.mitrais_atm_simulation.appexeption.InvalidAmountException;
+import com.mahendracandi.mitrais_atm_simulation.exception.InvalidAmountException;
 import com.mahendracandi.mitrais_atm_simulation.model.Customer;
 import com.mahendracandi.mitrais_atm_simulation.validation.AppValidator;
 

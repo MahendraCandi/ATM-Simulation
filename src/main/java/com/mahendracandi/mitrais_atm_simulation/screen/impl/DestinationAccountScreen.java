@@ -1,6 +1,6 @@
 package com.mahendracandi.mitrais_atm_simulation.screen.impl;
 
-import com.mahendracandi.mitrais_atm_simulation.appexeption.InvalidAccountException;
+import com.mahendracandi.mitrais_atm_simulation.exception.InvalidAccountException;
 import com.mahendracandi.mitrais_atm_simulation.model.Customer;
 import com.mahendracandi.mitrais_atm_simulation.screen.Screen;
 import com.mahendracandi.mitrais_atm_simulation.service.CustomerService;

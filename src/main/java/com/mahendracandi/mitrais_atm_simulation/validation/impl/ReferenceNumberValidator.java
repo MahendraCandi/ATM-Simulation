@@ -1,6 +1,6 @@
 package com.mahendracandi.mitrais_atm_simulation.validation.impl;
 
-import com.mahendracandi.mitrais_atm_simulation.appexeption.InvalidReferenceNumberException;
+import com.mahendracandi.mitrais_atm_simulation.exception.InvalidReferenceNumberException;
 import com.mahendracandi.mitrais_atm_simulation.util.AppUtil;
 import com.mahendracandi.mitrais_atm_simulation.validation.AppValidator;
 
