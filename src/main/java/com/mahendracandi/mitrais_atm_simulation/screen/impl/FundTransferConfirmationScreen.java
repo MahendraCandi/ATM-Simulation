@@ -1,7 +1,7 @@
 package com.mahendracandi.mitrais_atm_simulation.screen.impl;
 
 import com.mahendracandi.mitrais_atm_simulation.appenum.TransactionType;
-import com.mahendracandi.mitrais_atm_simulation.appexeption.InvalidAmountException;
+import com.mahendracandi.mitrais_atm_simulation.exeption.InvalidAmountException;
 import com.mahendracandi.mitrais_atm_simulation.model.Customer;
 import com.mahendracandi.mitrais_atm_simulation.model.Transaction;
 import com.mahendracandi.mitrais_atm_simulation.screen.Screen;

@@ -1,6 +1,6 @@
 package com.mahendracandi.mitrais_atm_simulation.validation.impl;
 
-import com.mahendracandi.mitrais_atm_simulation.appexeption.InvalidPinException;
+import com.mahendracandi.mitrais_atm_simulation.exeption.InvalidPinException;
 import com.mahendracandi.mitrais_atm_simulation.util.AppUtil;
 import com.mahendracandi.mitrais_atm_simulation.validation.AppValidator;
 
