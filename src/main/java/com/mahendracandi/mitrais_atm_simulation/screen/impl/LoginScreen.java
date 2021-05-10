@@ -32,12 +32,8 @@ public class LoginScreen extends Screen {
             PinValidator pinValidator = new PinValidator();
             pinValidator.validate(pinNumber);
 
-            Optional<Customer> opt = customerService.doLogin(accountNumber, pinNumber);
-            if (opt.isPresent()) {
-                customer = opt.get();
-            } else {
-                throw new InvalidAccountException(LOGIN_INVALID.value);
-            }
+            this.customer = customerService.doLogin(accountNumber, pinNumber);
+
         } catch (InvalidAccountException | InvalidPinException e) {
             MessageUtil.printInvalidMessage(e.getMessage());
         }

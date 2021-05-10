@@ -1,8 +1,10 @@
 package com.mahendracandi.mitrais_atm_simulation.service;
 
 import com.mahendracandi.mitrais_atm_simulation.appenum.TransactionType;
+import com.mahendracandi.mitrais_atm_simulation.exception.InvalidAccountException;
 import com.mahendracandi.mitrais_atm_simulation.model.Customer;
 import com.mahendracandi.mitrais_atm_simulation.model.Transaction;
+import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -27,12 +29,16 @@ public class TransactionServiceImpl implements TransactionService{
         Customer customer = transaction.getCustomer();
         BigDecimal deductedBalance = deductedBalance(customer.getBalance(), transaction.getAmount());
         customer.setBalance(deductedBalance);
-        customerService.updateCustomer(customer);
+        try {
+            customerService.updateCustomer(customer);
 
-        if (transaction.getTransactionType().equals(TransactionType.FUND_TRANSFER)) {
-            Customer destinationAccount = transaction.getDestinationAccount();
-            destinationAccount.setBalance(addBalance(destinationAccount.getBalance(), transaction.getAmount()));
-            customerService.updateCustomer(destinationAccount);
+            if (TransactionType.FUND_TRANSFER.equals(transaction.getTransactionType())) {
+                Customer destinationAccount = transaction.getDestinationAccount();
+                destinationAccount.setBalance(addBalance(destinationAccount.getBalance(), transaction.getAmount()));
+                customerService.updateCustomer(destinationAccount);
+            }
+        } catch (InvalidAccountException e) {
+            MessageUtil.printInvalidMessage(e.getMessage());
         }
     }
 

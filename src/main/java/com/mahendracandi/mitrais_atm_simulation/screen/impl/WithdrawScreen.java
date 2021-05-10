@@ -57,18 +57,9 @@ public class WithdrawScreen extends Screen {
                         break;
                 }
                 if (amountStr != null) {
-                    BigDecimal amount = new BigDecimal(amountStr);
-                    List<AppValidator<BigDecimal>> validators = new ArrayList<>();
-                    validators.add(new AmountValidator());
-                    validators.add(new CustomerBalanceValidator(customer));
-                    for (AppValidator<BigDecimal> validator : validators) {
-                        validator.validate(amount);
-                    }
-                    Transaction transaction = new Transaction();
-                    transaction.setTransactionType(TransactionType.WITHDRAW);
-                    transaction.setCustomer(customer);
-                    transaction.setAmount(amount);
-                    transaction.setDate(LocalDateTime.now());
+                    BigDecimal amount = validateAmount(amountStr);
+
+                    Transaction transaction = buildTransaction(amount);
                     SummaryScreen summaryScreen = new SummaryScreen(transaction);
                     summaryScreen.showScreen();
                     exitLoop = true;
@@ -79,5 +70,25 @@ public class WithdrawScreen extends Screen {
         } catch (Exception e) {
             MessageUtil.printInvalidMessage(e.getMessage());
         }
+    }
+
+    private Transaction buildTransaction(BigDecimal amount) {
+        Transaction transaction = new Transaction();
+        transaction.setTransactionType(TransactionType.WITHDRAW);
+        transaction.setCustomer(customer);
+        transaction.setAmount(amount);
+        transaction.setDate(LocalDateTime.now());
+        return transaction;
+    }
+
+    private BigDecimal validateAmount(String amountStr) throws Exception {
+        BigDecimal amount = new BigDecimal(amountStr);
+        List<AppValidator<BigDecimal>> validators = new ArrayList<>();
+        validators.add(new AmountValidator());
+        validators.add(new CustomerBalanceValidator(customer));
+        for (AppValidator<BigDecimal> validator : validators) {
+            validator.validate(amount);
+        }
+        return amount;
     }
 }

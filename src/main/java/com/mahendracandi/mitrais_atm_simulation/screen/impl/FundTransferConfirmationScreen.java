@@ -38,16 +38,9 @@ public class FundTransferConfirmationScreen extends Screen {
             String option = doInput("2");
             switch (option) {
                 case "1":
-                    CustomerBalanceValidator validator = new CustomerBalanceValidator(customer);
-                    validator.validate(transferAmount);
+                    validateBalance();
 
-                    Transaction transaction = new Transaction();
-                    transaction.setTransactionType(TransactionType.FUND_TRANSFER);
-                    transaction.setCustomer(customer);
-                    transaction.setDestinationAccount(destinationAccount);
-                    transaction.setAmount(transferAmount);
-                    transaction.setReferenceNumber(referenceNumber);
-                    transaction.setDate(LocalDateTime.now());
+                    Transaction transaction = buildTransaction();
 
                     SummaryScreen summaryScreen = new SummaryScreen(transaction);
                     summaryScreen.showScreen();
@@ -58,5 +51,21 @@ public class FundTransferConfirmationScreen extends Screen {
                     break;
             }
         } while (!exitLoop);
+    }
+
+    private Transaction buildTransaction() {
+        Transaction transaction = new Transaction();
+        transaction.setTransactionType(TransactionType.FUND_TRANSFER);
+        transaction.setCustomer(customer);
+        transaction.setDestinationAccount(destinationAccount);
+        transaction.setAmount(transferAmount);
+        transaction.setReferenceNumber(referenceNumber);
+        transaction.setDate(LocalDateTime.now());
+        return transaction;
+    }
+
+    private void validateBalance() throws InvalidAmountException {
+        CustomerBalanceValidator validator = new CustomerBalanceValidator(customer);
+        validator.validate(transferAmount);
     }
 }

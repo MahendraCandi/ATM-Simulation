@@ -25,10 +25,7 @@ public class DestinationAccountScreen extends Screen {
         DestinationAccountValidator destinationAccountValidator = new DestinationAccountValidator();
         destinationAccountValidator.validate(destinationAccount);
 
-        Optional<Customer> optCustomer = customerService.getCustomerByAccountNumber(destinationAccount);
-        if (optCustomer.isPresent()) {
-            destinationCustomer = optCustomer.get();
-        } else throw new InvalidAccountException(INVALID_ACCOUNT.value);
+        this.destinationCustomer = customerService.getCustomerByAccountNumber(destinationAccount);
     }
 
     public Optional<Customer> getDestinationCustomer() {

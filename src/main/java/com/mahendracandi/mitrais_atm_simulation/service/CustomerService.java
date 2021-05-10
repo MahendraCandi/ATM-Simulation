@@ -1,18 +1,18 @@
 package com.mahendracandi.mitrais_atm_simulation.service;
 
+import com.mahendracandi.mitrais_atm_simulation.exception.InvalidAccountException;
 import com.mahendracandi.mitrais_atm_simulation.model.Customer;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface CustomerService {
     List<Customer> getCustomers ();
 
-    Optional<Customer> getCustomerByAccountNumber(String accountNumber);
+    Customer getCustomerByAccountNumber(String accountNumber) throws InvalidAccountException;
 
-    Optional<Customer> getCustomerByAccountAndPinNumber(String accountNumber, String pinNumber);
+    Customer getCustomerByAccountAndPinNumber(String accountNumber, String pinNumber) throws InvalidAccountException;
 
-    Optional<Customer> updateCustomer(Customer customer);
+    Customer updateCustomer(Customer customer) throws InvalidAccountException;
 
-    Optional<Customer> doLogin(String accountNumber, String pinNumber);
+    Customer doLogin(String accountNumber, String pinNumber) throws InvalidAccountException;
 }
