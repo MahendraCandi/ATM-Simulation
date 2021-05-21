@@ -89,9 +89,9 @@ public class Transaction {
 
     private String withdrawTransactionToString() {
         return "Summary" +
-                "\nDate     : "  + date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a")) +
-                "\nWithdraw : $" + amount +
-                "\nBalance  : $" + (customer.getBalance().intValue() - amount.intValue());
+                "\nDate     : "  + formattedDate() +
+                "\nWithdraw : $" + amount.intValue() +
+                "\nBalance  : $" + reviewEndingBalance();
     }
 
     private String fundTransferToString() {
@@ -99,6 +99,42 @@ public class Transaction {
                 "\nDestination Account : "  + destinationAccount.getAccountNumber() +
                 "\nTransfer Amount     : $" + amount.intValue() +
                 "\nReference Number    : "  + referenceNumber +
-                "\nBalance             : $" + (customer.getBalance().intValue() - amount.intValue());
+                "\nBalance             : $" + reviewEndingBalance();
+    }
+
+    public String toStringAsHistory() {
+        String value;
+        if (TransactionType.WITHDRAW.equals(transactionType)) {
+            value = withdrawTransactionToString();
+        } else if (TransactionType.FUND_TRANSFER.equals(transactionType)) {
+            value = fundTransferToString();
+        } else {
+            value = toString();
+        }
+        return value;
+    }
+
+    private String withdrawHistory() {
+        return  "Withdraw" +
+                "\nDate     : "  + formattedDate() +
+                "\nWithdraw : $" + amount.intValue() +
+                "\nBalance  : $" + reviewEndingBalance();
+    }
+
+    private String fundTransferHistory() {
+        return "Fund Transfer" +
+                "\nDate     : "  + formattedDate() +
+                "\nDestination Account : "  + destinationAccount.getAccountNumber() +
+                "\nTransfer Amount     : $" + amount.intValue() +
+                "\nReference Number    : "  + referenceNumber +
+                "\nBalance             : $" + reviewEndingBalance();
+    }
+
+    private int reviewEndingBalance() {
+        return customer.getBalance().intValue() - amount.intValue();
+    }
+
+    private String formattedDate() {
+        return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a"));
     }
 }
