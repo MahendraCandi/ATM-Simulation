@@ -17,7 +17,14 @@ import static com.mahendracandi.mitrais_atm_simulation.appenum.ValidationResult.
 public class LoginScreen extends Screen {
 
     private Customer customer;
-    private final CustomerService customerService = new CustomerServiceImpl();
+    private CustomerService customerService;
+
+    public LoginScreen() {
+    }
+
+    public LoginScreen(CustomerService customerService) {
+        this.customerService = customerService;
+    }
 
     @Override
     public void showScreen() {

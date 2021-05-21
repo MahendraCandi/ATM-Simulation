@@ -2,15 +2,18 @@ package com.mahendracandi.mitrais_atm_simulation.screen.impl;
 
 import com.mahendracandi.mitrais_atm_simulation.model.Customer;
 import com.mahendracandi.mitrais_atm_simulation.screen.Screen;
+import com.mahendracandi.mitrais_atm_simulation.service.CustomerService;
 
 import static com.mahendracandi.mitrais_atm_simulation.util.MessageUtil.printMessage;
 
 public class TransactionScreen extends Screen {
 
     private final Customer customer;
+    private final CustomerService customerService;
 
-    public TransactionScreen(Customer customer) {
+    public TransactionScreen(Customer customer, CustomerService customerService) {
         this.customer = customer;
+        this.customerService = customerService;
     }
 
     @Override
@@ -28,7 +31,7 @@ public class TransactionScreen extends Screen {
                     withdrawScreen.showScreen();
                     break;
                 case "2":
-                    FundTransferScreen fundTransferScreen = new FundTransferScreen(customer);
+                    FundTransferScreen fundTransferScreen = new FundTransferScreen(customer, customerService);
                     fundTransferScreen.showScreen();
                     break;
                 case "3":

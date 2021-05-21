@@ -4,17 +4,18 @@ import com.mahendracandi.mitrais_atm_simulation.exception.InvalidAccountExceptio
 import com.mahendracandi.mitrais_atm_simulation.model.Customer;
 import com.mahendracandi.mitrais_atm_simulation.screen.Screen;
 import com.mahendracandi.mitrais_atm_simulation.service.CustomerService;
-import com.mahendracandi.mitrais_atm_simulation.service.CustomerServiceImpl;
 import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
 import com.mahendracandi.mitrais_atm_simulation.validation.impl.DestinationAccountValidator;
 
 import java.util.Optional;
 
-import static com.mahendracandi.mitrais_atm_simulation.appenum.ValidationResult.INVALID_ACCOUNT;
-
 public class DestinationAccountScreen extends Screen {
     private Customer destinationCustomer;
-    private final CustomerService customerService = new CustomerServiceImpl();
+    private CustomerService customerService;
+
+    public DestinationAccountScreen(CustomerService customerService) {
+        this.customerService = customerService;
+    }
 
     @Override
     public void showScreen() throws InvalidAccountException {

@@ -19,7 +19,9 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     public CustomerServiceImpl(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
+        if (customerRepository.getAllCustomers().isEmpty()) {
+            this.customerRepository = new DefaultCustomers();
+        } else this.customerRepository = customerRepository;
     }
 
     @Override
