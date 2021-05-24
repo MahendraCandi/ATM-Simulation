@@ -8,7 +8,9 @@ public abstract class Screen {
     public abstract void showScreen() throws Exception;
 
     protected String doInput() {
-        return this.scanner.nextLine();
+        String s = "";
+        s = this.scanner.nextLine();
+        return s;
     }
 
     protected String doInput(String defaultInput) {
@@ -16,6 +18,21 @@ public abstract class Screen {
 
         String scanInput = doInput();
         return (scanInput == null || scanInput.isEmpty()) ? defaultInput : scanInput;
+    }
+
+    protected void clearScreen() {
+        try {
+            final String os = System.getProperty("os.name");
+
+            if (os.contains("Windows")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                Runtime.getRuntime().exec("clear");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.printStackTrace();
+        }
     }
 
 }
