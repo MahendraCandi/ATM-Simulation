@@ -11,7 +11,13 @@ import java.time.LocalDateTime;
 
 public class TransactionServiceImpl implements TransactionService{
 
-    private final CustomerService customerService = new CustomerServiceImpl();
+    private final CustomerService customerService;
+    private final TransactionHistoryService historyService;
+
+    public TransactionServiceImpl(CustomerService customerService) {
+        this.customerService = customerService;
+        this.historyService = new TransactionHistoryServiceImpl();
+    }
 
     @Override
     public void doTransaction(TransactionType transactionType, Customer customer, BigDecimal amount, LocalDateTime dateTime) {
@@ -32,11 +38,14 @@ public class TransactionServiceImpl implements TransactionService{
         try {
             customerService.updateCustomer(customer);
 
+            Customer destinationAccount = new Customer();
             if (TransactionType.FUND_TRANSFER.equals(transaction.getTransactionType())) {
-                Customer destinationAccount = transaction.getDestinationAccount();
+                destinationAccount = transaction.getDestinationAccount();
                 destinationAccount.setBalance(addBalance(destinationAccount.getBalance(), transaction.getAmount()));
                 customerService.updateCustomer(destinationAccount);
             }
+
+            historyService.saveHistory(transaction, customer, destinationAccount);
         } catch (InvalidAccountException e) {
             MessageUtil.printInvalidMessage(e.getMessage());
         }

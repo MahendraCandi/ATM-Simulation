@@ -2,6 +2,7 @@ package com.mahendracandi.mitrais_atm_simulation.screen.impl;
 
 import com.mahendracandi.mitrais_atm_simulation.model.Transaction;
 import com.mahendracandi.mitrais_atm_simulation.screen.Screen;
+import com.mahendracandi.mitrais_atm_simulation.service.CustomerService;
 import com.mahendracandi.mitrais_atm_simulation.service.TransactionService;
 import com.mahendracandi.mitrais_atm_simulation.service.TransactionServiceImpl;
 import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
@@ -9,10 +10,11 @@ import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
 public class SummaryScreen extends Screen {
 
     private final Transaction transaction;
-    private final TransactionService transactionService = new TransactionServiceImpl();
+    private final TransactionService transactionService;
 
-    public SummaryScreen(Transaction transaction) {
+    public SummaryScreen(Transaction transaction, CustomerService customerService) {
         this.transaction = transaction;
+        this.transactionService = new TransactionServiceImpl(customerService);
     }
 
     @Override

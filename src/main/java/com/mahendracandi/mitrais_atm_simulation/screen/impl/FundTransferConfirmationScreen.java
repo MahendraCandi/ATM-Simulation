@@ -5,6 +5,7 @@ import com.mahendracandi.mitrais_atm_simulation.exception.InvalidAmountException
 import com.mahendracandi.mitrais_atm_simulation.model.Customer;
 import com.mahendracandi.mitrais_atm_simulation.model.Transaction;
 import com.mahendracandi.mitrais_atm_simulation.screen.Screen;
+import com.mahendracandi.mitrais_atm_simulation.service.CustomerService;
 import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
 import com.mahendracandi.mitrais_atm_simulation.validation.impl.CustomerBalanceValidator;
 
@@ -16,12 +17,15 @@ public class FundTransferConfirmationScreen extends Screen {
     private final Customer destinationAccount;
     private final BigDecimal transferAmount;
     private final String referenceNumber;
+    private final CustomerService customerService;
 
-    public FundTransferConfirmationScreen(Customer customer, Customer destinationAccount, BigDecimal transferAmount, String referenceNumber) {
+    public FundTransferConfirmationScreen(Customer customer, Customer destinationAccount, BigDecimal transferAmount,
+                                          String referenceNumber, CustomerService customerService) {
         this.customer = customer;
         this.destinationAccount = destinationAccount;
         this.transferAmount = transferAmount;
         this.referenceNumber = referenceNumber;
+        this.customerService = customerService;
     }
 
     @Override
@@ -42,7 +46,7 @@ public class FundTransferConfirmationScreen extends Screen {
 
                     Transaction transaction = buildTransaction();
 
-                    SummaryScreen summaryScreen = new SummaryScreen(transaction);
+                    SummaryScreen summaryScreen = new SummaryScreen(transaction, customerService);
                     summaryScreen.showScreen();
                     exitLoop = true;
                     break;

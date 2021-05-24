@@ -102,26 +102,14 @@ public class Transaction {
                 "\nBalance             : $" + reviewEndingBalance();
     }
 
-    public String toStringAsHistory() {
-        String value;
-        if (TransactionType.WITHDRAW.equals(transactionType)) {
-            value = withdrawTransactionToString();
-        } else if (TransactionType.FUND_TRANSFER.equals(transactionType)) {
-            value = fundTransferToString();
-        } else {
-            value = toString();
-        }
-        return value;
-    }
-
-    private String withdrawHistory() {
+    public String toStringAsWithdrawHistory() {
         return  "Withdraw" +
                 "\nDate     : "  + formattedDate() +
                 "\nWithdraw : $" + amount.intValue() +
                 "\nBalance  : $" + reviewEndingBalance();
     }
 
-    private String fundTransferHistory() {
+    public String toStringAsFundTransferHistory() {
         return "Fund Transfer" +
                 "\nDate     : "  + formattedDate() +
                 "\nDestination Account : "  + destinationAccount.getAccountNumber() +
@@ -130,11 +118,24 @@ public class Transaction {
                 "\nBalance             : $" + reviewEndingBalance();
     }
 
-    private int reviewEndingBalance() {
+    public String toStringAsDepositHistory() {
+        return "Deposit Transfer" +
+                "\nDate     : "  + formattedDate() +
+                "\nSender Account : "  + customer.getAccountNumber() +
+                "\nTransfer Amount     : $" + amount.intValue() +
+                "\nReference Number    : "  + referenceNumber +
+                "\nBalance             : $" + reviewDepositEndingBalance();
+    }
+
+    public int reviewEndingBalance() {
         return customer.getBalance().intValue() - amount.intValue();
     }
 
-    private String formattedDate() {
+    public int reviewDepositEndingBalance() {
+        return destinationAccount.getBalance().intValue() + amount.intValue();
+    }
+
+    public String formattedDate() {
         return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a"));
     }
 }

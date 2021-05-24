@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 public class FundTransferScreen extends Screen {
 
     private final Customer customer;
-    private CustomerService customerService;
+    private final CustomerService customerService;
 
     public FundTransferScreen(Customer customer, CustomerService customerService) {
         this.customer = customer;
@@ -42,7 +42,7 @@ public class FundTransferScreen extends Screen {
             } else return;
 
             FundTransferConfirmationScreen confirmationScreen =
-                    new FundTransferConfirmationScreen(customer, destinationAccount, transferAmount, referenceNumber);
+                    new FundTransferConfirmationScreen(customer, destinationAccount, transferAmount, referenceNumber, customerService);
             confirmationScreen.showScreen();
         } catch (Exception e) {
             MessageUtil.printInvalidMessage(e.getMessage());

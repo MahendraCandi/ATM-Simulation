@@ -4,6 +4,7 @@ import com.mahendracandi.mitrais_atm_simulation.appenum.TransactionType;
 import com.mahendracandi.mitrais_atm_simulation.model.Customer;
 import com.mahendracandi.mitrais_atm_simulation.model.Transaction;
 import com.mahendracandi.mitrais_atm_simulation.screen.Screen;
+import com.mahendracandi.mitrais_atm_simulation.service.CustomerService;
 import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
 import com.mahendracandi.mitrais_atm_simulation.validation.AppValidator;
 import com.mahendracandi.mitrais_atm_simulation.validation.impl.AmountValidator;
@@ -19,9 +20,11 @@ import static com.mahendracandi.mitrais_atm_simulation.appenum.ValidationResult.
 public class WithdrawScreen extends Screen {
 
     private final Customer customer;
+    private final CustomerService customerService;
 
-    public WithdrawScreen(Customer customer) {
+    public WithdrawScreen(Customer customer, CustomerService customerService) {
         this.customer = customer;
+        this.customerService = customerService;
     }
 
     @Override
@@ -60,7 +63,7 @@ public class WithdrawScreen extends Screen {
                     BigDecimal amount = validateAmount(amountStr);
 
                     Transaction transaction = buildTransaction(amount);
-                    SummaryScreen summaryScreen = new SummaryScreen(transaction);
+                    SummaryScreen summaryScreen = new SummaryScreen(transaction, customerService);
                     summaryScreen.showScreen();
                     exitLoop = true;
                 }
