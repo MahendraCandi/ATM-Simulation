@@ -15,20 +15,12 @@ public class CustomersByCSVTest  {
     @Test
     public void generateCsvRecordWithIncorrectPath() {
         CustomersByCSV customers = new CustomersByCSV("./incorrect/path/accounts.csv");
-        Assert.assertNull(customers.getAllCustomers());
+        Assert.assertTrue(customers.getAllCustomers().isEmpty());
     }
 
     @Test
     public void CustomersNotEmpty() {
         String fileFromResources = new AppUtil().getAbsolutePathFromResourcesDirectory("accounts.csv");
-        CustomerRepository customerRepository = new CustomersByCSV(fileFromResources);
-
-        Assert.assertFalse(customerRepository.getAllCustomers().isEmpty());
-    }
-
-    @Test
-    public void CustomerHasDuplicateRecords() {
-        String fileFromResources = new AppUtil().getAbsolutePathFromResourcesDirectory("accounts-duplicaxxx.csv");
         CustomerRepository customerRepository = new CustomersByCSV(fileFromResources);
 
         Assert.assertFalse(customerRepository.getAllCustomers().isEmpty());

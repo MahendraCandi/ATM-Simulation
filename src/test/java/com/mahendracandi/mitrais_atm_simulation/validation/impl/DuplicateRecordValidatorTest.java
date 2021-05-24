@@ -31,11 +31,13 @@ public class DuplicateRecordValidatorTest {
         try {
             String fileResourcePath = new AppUtil().getAbsolutePathFromResourcesDirectory("accounts-duplicate.csv");
             CustomersByCSV customerRepository = new CustomersByCSV(fileResourcePath);
-            List<Customer> customers = customerRepository.getAllCustomers();
+            List<String> records = customerRepository.generateCsvRecordAsListOfString(Paths.get(fileResourcePath));
+            List<Customer> customers = customerRepository.generateCustomerFromListOfRecords(records);
+
             AppValidator<List<Customer>> appValidator = new DuplicateAccountValidator();
             appValidator.validate(customers);
         } catch (Exception e) {
-            Assert.assertTrue(true);
+            Assert.assertTrue("Customers has duplicate record", true);
             return;
         }
         Assert. fail("Customers didn't have duplicate record");
