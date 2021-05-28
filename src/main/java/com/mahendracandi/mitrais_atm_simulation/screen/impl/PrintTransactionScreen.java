@@ -33,12 +33,12 @@ public class PrintTransactionScreen extends Screen {
         int number = 1;
         for (Transaction t : rangeHistories) {
             if (isWithdrawTransaction(t)) {
-                MessageUtil.printMessage(number + ". " + toStringAsWithdrawHistory(t));
+                MessageUtil.printMessage(number + ". " + toStringAsWithdrawHistory(t) + "\n");
             } else {
                 if (isDepositTransaction(t)) {
-                    MessageUtil.printMessage(number + ". " + toStringAsDepositHistory(t));
+                    MessageUtil.printMessage(number + ". " + toStringAsDepositHistory(t) + "\n");
                 } else if (isFundTransferTransaction(t)) {
-                    MessageUtil.printMessage(number + ". " + toStringAsFundTransferHistory(t));
+                    MessageUtil.printMessage(number + ". " + toStringAsFundTransferHistory(t) + "\n");
                 }
             }
             number++;
