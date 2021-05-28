@@ -40,7 +40,7 @@ public class TransactionScreen extends Screen {
                     fundTransferScreen.showScreen();
                     break;
                 case LAST_TRANSACTION_MENU:
-                    PrintTransactionScreen printTransactionScreen = new PrintTransactionScreen(customer);
+                    PrintTransactionScreen printTransactionScreen = new PrintTransactionScreen(customer, customerService);
                     printTransactionScreen.showScreen();
                     break;
                 case EXIT_MENU:

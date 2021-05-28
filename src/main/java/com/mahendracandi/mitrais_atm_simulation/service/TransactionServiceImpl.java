@@ -4,19 +4,23 @@ import com.mahendracandi.mitrais_atm_simulation.appenum.TransactionType;
 import com.mahendracandi.mitrais_atm_simulation.exception.InvalidAccountException;
 import com.mahendracandi.mitrais_atm_simulation.model.Customer;
 import com.mahendracandi.mitrais_atm_simulation.model.Transaction;
+import com.mahendracandi.mitrais_atm_simulation.repository.TransactionRepository;
+import com.mahendracandi.mitrais_atm_simulation.repository.TransactionRepositoryImpl;
 import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class TransactionServiceImpl implements TransactionService{
 
     private final CustomerService customerService;
-    private final TransactionHistoryService historyService;
+    private final TransactionRepository transactionRepository;
 
     public TransactionServiceImpl(CustomerService customerService) {
         this.customerService = customerService;
-        this.historyService = new TransactionHistoryServiceImpl();
+        this.transactionRepository = new TransactionRepositoryImpl();
     }
 
     @Override
@@ -38,17 +42,26 @@ public class TransactionServiceImpl implements TransactionService{
         try {
             customerService.updateCustomer(customer);
 
-            Customer destinationAccount = new Customer();
             if (TransactionType.FUND_TRANSFER.equals(transaction.getTransactionType())) {
-                destinationAccount = transaction.getDestinationAccount();
+                Customer destinationAccount = transaction.getDestinationAccount();
                 destinationAccount.setBalance(addBalance(destinationAccount.getBalance(), transaction.getAmount()));
                 customerService.updateCustomer(destinationAccount);
             }
 
-            historyService.saveHistory(transaction, customer, destinationAccount);
+            transactionRepository.saveTransaction(transaction);
         } catch (InvalidAccountException e) {
             MessageUtil.printInvalidMessage(e.getMessage());
         }
+    }
+
+    @Override
+    public List<Transaction> getAllTransactionsByAccountNumber(String accountNumber) {
+        return transactionRepository.getAllTransactionByAccountNumber(accountNumber)
+                .stream()
+                .filter(p -> accountNumber.equals(p.getCustomer().getAccountNumber()) ||
+                        (accountNumber.equals(p.getDestinationAccount().getAccountNumber()) &&
+                                TransactionType.FUND_TRANSFER.equals(p.getTransactionType())))
+                .collect(Collectors.toList());
     }
 
     private BigDecimal deductedBalance(BigDecimal balance, BigDecimal amount) {
