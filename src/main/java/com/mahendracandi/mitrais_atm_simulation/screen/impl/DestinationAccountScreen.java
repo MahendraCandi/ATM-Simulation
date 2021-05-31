@@ -7,8 +7,6 @@ import com.mahendracandi.mitrais_atm_simulation.service.CustomerService;
 import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
 import com.mahendracandi.mitrais_atm_simulation.validation.impl.DestinationAccountValidator;
 
-import java.util.Optional;
-
 public class DestinationAccountScreen extends Screen {
     private Customer destinationCustomer;
     private CustomerService customerService;
@@ -29,7 +27,7 @@ public class DestinationAccountScreen extends Screen {
         this.destinationCustomer = customerService.getCustomerByAccountNumber(destinationAccount);
     }
 
-    public Optional<Customer> getDestinationCustomer() {
-        return destinationCustomer == null ? Optional.empty() : Optional.of(destinationCustomer);
+    public Customer getDestinationCustomer() {
+        return destinationCustomer;
     }
 }

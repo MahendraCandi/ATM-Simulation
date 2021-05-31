@@ -13,6 +13,6 @@ public interface TransactionService {
 
     void doTransaction(Transaction transaction);
 
-    List<Transaction> getAllTransactionsByAccountNumber(String accountNumber);
+    List<Transaction> getAllTransactionsByAccountNumber(String accountNumber, int maxSize);
 
 }

@@ -7,9 +7,7 @@ import com.mahendracandi.mitrais_atm_simulation.screen.Screen;
 import com.mahendracandi.mitrais_atm_simulation.service.*;
 import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PrintTransactionScreen extends Screen {
 
@@ -24,14 +22,11 @@ public class PrintTransactionScreen extends Screen {
     @Override
     public void showScreen() {
         List<Transaction> histories = transactionService
-                .getAllTransactionsByAccountNumber(customer.getAccountNumber())
-                .stream().sorted(Comparator.comparing(Transaction::getDate))
-                .collect(Collectors.toList());
+                .getAllTransactionsByAccountNumber(customer.getAccountNumber(), 10);
         if (histories.size() == 0) return;
 
-        List<Transaction> rangeHistories = searchTenLastTransaction(histories);
         int number = 1;
-        for (Transaction t : rangeHistories) {
+        for (Transaction t : histories) {
             if (isWithdrawTransaction(t)) {
                 MessageUtil.printMessage(number + ". " + toStringAsWithdrawHistory(t) + "\n");
             } else {

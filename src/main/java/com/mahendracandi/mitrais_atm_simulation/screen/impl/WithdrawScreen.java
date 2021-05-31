@@ -22,6 +22,15 @@ public class WithdrawScreen extends Screen {
     private final Customer customer;
     private final CustomerService customerService;
 
+    private static final String TEN_MENU = "1";
+    private static final String FIFTY_OPTION = "2";
+    private static final String ONE_HUNDRED_OPTION = "3";
+    private static final String OTHERS_OPTION = "4";
+    private static final String BACK_OPTION = "5";
+    private static final String TEN_DOLLAR = "10";
+    private static final String FIFTY_DOLLAR = "50";
+    private static final String HUNDRED_DOLLAR = "100";
+
     public WithdrawScreen(Customer customer, CustomerService customerService) {
         this.customer = customer;
         this.customerService = customerService;
@@ -41,21 +50,21 @@ public class WithdrawScreen extends Screen {
                 MessageUtil.printMessage("Please choose option[5]: ");
                 String input = doInput("5");
                 switch (input) {
-                    case "1":
-                        amountStr= "10";
+                    case TEN_MENU:
+                        amountStr= TEN_DOLLAR;
                         break;
-                    case "2":
-                        amountStr= "50";
+                    case FIFTY_OPTION:
+                        amountStr= FIFTY_DOLLAR;
                         break;
-                    case "3":
-                        amountStr= "100";
+                    case ONE_HUNDRED_OPTION:
+                        amountStr= HUNDRED_DOLLAR;
                         break;
-                    case "4":
+                    case OTHERS_OPTION:
                         MessageUtil.printMessage("Other Withdraw");
                         MessageUtil.printMessage("Enter amount to withdraw: ");
                         amountStr = doInput();
                         break;
-                    case "5":
+                    case BACK_OPTION:
                         exitLoop = true;
                         break;
                 }

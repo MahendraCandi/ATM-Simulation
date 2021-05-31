@@ -22,24 +22,15 @@ public class FundTransferScreen extends Screen {
         try {
             DestinationAccountScreen destinationAccountScreen = new DestinationAccountScreen(customerService);
             destinationAccountScreen.showScreen();
-            Customer destinationAccount;
-            if (destinationAccountScreen.getDestinationCustomer().isPresent()) {
-                destinationAccount = destinationAccountScreen.getDestinationCustomer().get();
-            } else return;
+            Customer destinationAccount = destinationAccountScreen.getDestinationCustomer();
 
             TransferAmountScreen tfAmountScreen = new TransferAmountScreen();
             tfAmountScreen.showScreen();
-            BigDecimal transferAmount;
-            if (tfAmountScreen.getTransferAmount().isPresent()) {
-                transferAmount = tfAmountScreen.getTransferAmount().get();
-            } else return;
+            BigDecimal transferAmount = tfAmountScreen.getTransferAmount();
 
             ReferenceNumberScreen referenceNumberScreen = new ReferenceNumberScreen();
             referenceNumberScreen.showScreen();
-            String referenceNumber;
-            if (referenceNumberScreen.getReferenceNumber().isPresent()) {
-                referenceNumber = referenceNumberScreen.getReferenceNumber().get();
-            } else return;
+            String referenceNumber = referenceNumberScreen.getReferenceNumber();
 
             FundTransferConfirmationScreen confirmationScreen =
                     new FundTransferConfirmationScreen(customer, destinationAccount, transferAmount, referenceNumber, customerService);
