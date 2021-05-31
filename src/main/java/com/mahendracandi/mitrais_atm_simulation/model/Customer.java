@@ -11,7 +11,7 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(String name, String pin, String accountNumber, BigDecimal balance) {
+    public Customer(String name, String accountNumber, String pin, BigDecimal balance) {
         this.name = name;
         this.pin = pin;
         this.accountNumber = accountNumber;

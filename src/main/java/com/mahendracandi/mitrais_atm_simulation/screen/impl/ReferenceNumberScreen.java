@@ -6,8 +6,6 @@ import com.mahendracandi.mitrais_atm_simulation.util.AppUtil;
 import com.mahendracandi.mitrais_atm_simulation.util.MessageUtil;
 import com.mahendracandi.mitrais_atm_simulation.validation.impl.ReferenceNumberValidator;
 
-import java.util.Optional;
-
 public class ReferenceNumberScreen extends Screen {
     private final AppUtil appUtil = new AppUtil();
     private String referenceNumber;
@@ -24,7 +22,7 @@ public class ReferenceNumberScreen extends Screen {
         this.referenceNumber = referenceNumber;
     }
 
-    public Optional<String> getReferenceNumber() {
-        return referenceNumber == null ? Optional.empty() : Optional.of(referenceNumber);
+    public String getReferenceNumber() {
+        return referenceNumber;
     }
 }

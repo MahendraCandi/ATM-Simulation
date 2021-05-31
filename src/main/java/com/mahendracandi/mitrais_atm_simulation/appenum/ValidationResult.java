@@ -11,7 +11,10 @@ public enum ValidationResult {
     INVALID_MINIMUM_AMOUNT("Minimum amount to withdraw is $1"),
     INSUFFICIENT_BALANCE("Insufficient balance"),
     INVALID_ACCOUNT("Invalid account"),
-    INVALID_REFERENCE_NUMBER("Invalid Reference Number");
+    INVALID_REFERENCE_NUMBER("Invalid Reference Number"),
+    DUPLICATE_RECORD("There can't be duplicated records"),
+    DUPLICATE_ACCOUNT("There can't be 2 different accounts with the same Account Number"),
+    INVALID_CSV_FILE("Cannot find CSV file: ");
 
     public final String value;
 
