@@ -20,12 +20,16 @@ target/
 *.ipr
 
 ### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+**/nbproject/private/
+**/nbproject/Makefile-*.mk
+**/nbproject/Package-*.bash
 build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+nb-configuration.xml
+**/META-INF/context.xml
 
 ### VS Code ###
 .vscode/
